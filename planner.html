@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4c9d1" />
+  <title>Weekly Planner | Amaris CT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="top-actions" aria-label="Planner actions">
+    <a class="action-button home-button" href="index.html">HOME</a>
+    <button class="action-button print-button" id="printButton" type="button" aria-label="Print weekly planner">PRINT</button>
+    <button class="action-button customize-button is-hidden" id="customizeButton" type="button" aria-controls="themePanel" aria-expanded="false">CUSTOMIZE</button>
+    <a class="action-button login-button" id="loginButton" href="login.html">LOGIN</a>
+
+    <div class="account-wrap is-hidden" id="accountWrap">
+      <button class="action-button account-button" id="accountButton" type="button" aria-haspopup="menu" aria-expanded="false">
+        <span id="accountName">ACCOUNT</span><span aria-hidden="true">⌄</span>
+      </button>
+      <div class="account-menu" id="accountMenu" role="menu" hidden>
+        <button type="button" id="menuCustomize" role="menuitem">CUSTOMIZE</button>
+        <a href="index.html" role="menuitem">HOME</a>
+        <button type="button" id="logoutButton" role="menuitem">LOG OUT</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="theme-panel" id="themePanel" aria-hidden="true">
+    <div class="theme-panel-header">
+      <div>
+        <p class="theme-kicker">EDIT APPEARANCE</p>
+        <h2>Customize</h2>
+      </div>
+      <button class="panel-close" id="closeThemePanel" type="button" aria-label="Close customize panel">×</button>
+    </div>
+
+    <div class="theme-controls">
+      <label class="theme-control">
+        <span>Background style</span>
+        <select id="backgroundStyle">
+          <option value="stripes">Stripes</option>
+          <option value="solid">Solid color</option>
+          <option value="image">Image</option>
+        </select>
+      </label>
+
+      <div class="color-row">
+        <label class="theme-control color-control">
+          <span>Page color</span>
+          <input id="pageColor" type="color" value="#f7d9df">
+        </label>
+
+        <label class="theme-control color-control" id="stripeControl">
+          <span>Stripe color</span>
+          <input id="stripeColor" type="color" value="#efc3cc">
+        </label>
+      </div>
+
+      <div class="color-row">
+        <label class="theme-control color-control">
+          <span>Planner boxes</span>
+          <input id="paperColor" type="color" value="#fffaf8">
+        </label>
+
+        <label class="theme-control color-control">
+          <span>Text + borders</span>
+          <input id="accentColor" type="color" value="#8f565d">
+        </label>
+      </div>
+
+      <div class="image-options" id="imageOptions">
+        <label class="theme-control">
+          <span>Background image URL</span>
+          <input id="backgroundImageUrl" type="url" placeholder="https://example.com/image.jpg">
+        </label>
+
+        <label class="background-drop-zone" id="backgroundDropZone" for="backgroundImageFile" tabindex="0">
+          <input class="background-file-input" id="backgroundImageFile" type="file" accept="image/*">
+          <strong>DROP AN IMAGE HERE</strong>
+          <span>or click to choose a photo</span>
+        </label>
+
+        <div class="background-preview" id="backgroundPreview" hidden>
+          <img id="backgroundPreviewImage" alt="Selected background preview">
+          <button class="remove-background-image" id="removeBackgroundImage" type="button">REMOVE IMAGE</button>
+        </div>
+
+        <label class="theme-control">
+          <span>Image layout</span>
+          <select id="backgroundSize">
+            <option value="cover">One big background — cover</option>
+            <option value="contain">One big background — fit</option>
+            <option value="stretch">Stretch to page</option>
+            <option value="auto">Original size</option>
+            <option value="pattern">Repeat as pattern</option>
+            <option value="repeat-x">Repeat across</option>
+            <option value="repeat-y">Repeat down</option>
+          </select>
+        </label>
+
+        <label class="theme-control">
+          <span>Image position</span>
+          <select id="backgroundPosition">
+            <option value="center center">Center</option>
+            <option value="center top">Top</option>
+            <option value="center bottom">Bottom</option>
+            <option value="left center">Left</option>
+            <option value="right center">Right</option>
+            <option value="left top">Top left</option>
+            <option value="right top">Top right</option>
+            <option value="left bottom">Bottom left</option>
+            <option value="right bottom">Bottom right</option>
+          </select>
+        </label>
+
+        <label class="theme-control pattern-scale-control" id="patternScaleWrap">
+          <span>Pattern size <output id="patternScaleValue">180px</output></span>
+          <input id="patternScale" type="range" min="40" max="500" step="10" value="180">
+        </label>
+
+        <p class="image-helper">Use <b>cover</b> for one large photo, or <b>repeat as pattern</b> for a Tumblr-style tiled background. Your image and settings save with your planner on this browser.</p>
+      </div>
+
+      <div class="theme-presets" aria-label="Theme presets">
+        <button type="button" class="preset-button" data-preset="pink">PINK</button>
+        <button type="button" class="preset-button" data-preset="cream">CREAM</button>
+        <button type="button" class="preset-button" data-preset="lavender">LAVENDER</button>
+        <button type="button" class="preset-button" data-preset="dark">DARK</button>
+      </div>
+
+      <button class="theme-reset" id="resetTheme" type="button">RESET TO ORIGINAL</button>
+      <p class="theme-note">Your theme saves to your logged-in planner account on this browser.</p>
+    </div>
+  </aside>
+  <div class="panel-backdrop" id="panelBackdrop" hidden></div>
+
+  <main class="planner" aria-label="Weekly planner">
+    <header class="planner-header">
+      <p class="eyebrow">MY WEEK AT A GLANCE</p>
+      <h1>WEEKLY PLANNER</h1>
+
+      <div class="date-fields" aria-label="Planner date selectors">
+        <label class="field-group" for="weekOf">
+          <span>Week of:</span>
+          <input id="weekOf" type="date" aria-label="Select the week date" />
+        </label>
+
+        <label class="field-group" for="month">
+          <span>Month:</span>
+          <select id="month" aria-label="Select month"></select>
+        </label>
+      </div>
+    </header>
+
+    <section class="days-grid" aria-label="Days of the week">
+      <article class="planner-box day-box"><h2>MONDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Monday plans" data-key="monday"></div></article>
+      <article class="planner-box day-box"><h2>TUESDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Tuesday plans" data-key="tuesday"></div></article>
+      <article class="planner-box day-box"><h2>WEDNESDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Wednesday plans" data-key="wednesday"></div></article>
+      <article class="planner-box day-box"><h2>THURSDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Thursday plans" data-key="thursday"></div></article>
+      <article class="planner-box day-box"><h2>FRIDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Friday plans" data-key="friday"></div></article>
+      <article class="planner-box day-box"><h2>SATURDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Saturday plans" data-key="saturday"></div></article>
+      <article class="planner-box day-box sunday-box"><h2>SUNDAY</h2><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Sunday plans" data-key="sunday"></div></article>
+    </section>
+
+    <section class="goals-section" aria-label="Weekly goals">
+      <h2 class="script-heading">Weekly goals</h2>
+      <div class="weekly-goals-grid">
+        <article class="planner-box goal-box"><h3>WEEK 1</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 1 goals" data-key="week1"></div></article>
+        <article class="planner-box goal-box"><h3>WEEK 2</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 2 goals" data-key="week2"></div></article>
+        <article class="planner-box goal-box"><h3>WEEK 3</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 3 goals" data-key="week3"></div></article>
+        <article class="planner-box goal-box"><h3>WEEK 4</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 4 goals" data-key="week4"></div></article>
+      </div>
+    </section>
+
+    <section class="monthly-section" aria-label="Monthly goals">
+      <h2 class="script-heading">Monthly goals</h2>
+      <article class="planner-box monthly-box"><div class="lined-field monthly-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Monthly goals" data-key="monthly"></div></article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -167,9 +167,46 @@ body[data-period="night"] .cloud{opacity:.24}
 .string-lights i:nth-child(5){left:90%;top:10px;animation-delay:2s}
 .hanging-stars{position:absolute;z-index:8;top:2%;width:14%;height:24%;pointer-events:none}
 .stars-left{left:8%}.stars-right{right:8%}
-.star{position:absolute;width:26px;height:26px;background:var(--yellow);border:3px solid var(--outline);clip-path:polygon(50% 0,61% 34%,98% 36%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 36%,39% 34%)}
-.star::before{content:"";position:absolute;width:3px;height:76px;background:var(--outline);left:50%;bottom:100%}
-.star.s1{left:5%;top:35%;transform:scale(.8)}.star.s2{left:42%;top:61%;transform:scale(1.15)}.star.s3{right:2%;top:23%;transform:scale(.62)}
+.star{
+  position:absolute;
+  width:26px;
+  height:26px;
+  background:var(--yellow);
+  border:3px solid var(--outline);
+  clip-path:polygon(50% 0,61% 34%,98% 36%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 36%,39% 34%);
+  transform-origin:center;
+  animation:starFloat 3.2s ease-in-out infinite;
+}
+.star::before{
+  content:"";
+  position:absolute;
+  width:3px;
+  height:76px;
+  background:var(--outline);
+  left:50%;
+  bottom:100%;
+}
+.star.s1{
+  --star-scale:.8;
+  left:5%;
+  top:35%;
+  animation-delay:0s;
+  animation-duration:3.1s;
+}
+.star.s2{
+  --star-scale:1.15;
+  left:42%;
+  top:61%;
+  animation-delay:.7s;
+  animation-duration:3.8s;
+}
+.star.s3{
+  --star-scale:.62;
+  right:2%;
+  top:23%;
+  animation-delay:1.25s;
+  animation-duration:2.7s;
+}
 .music-note{position:absolute;z-index:12;font:700 38px "Fredoka";color:var(--blue);text-shadow:2px 2px 0 var(--outline);animation:noteBob 3s ease-in-out infinite}
 .note-one{left:8%;top:34%}.note-two{left:15%;top:41%;color:var(--yellow);animation-delay:-1.2s}
 .left-shelf{position:absolute;left:0;top:47%;width:18%;height:15%;z-index:9}
@@ -239,6 +276,10 @@ body[data-period="night"] .cloud{opacity:.24}
 .time-card{position:absolute;left:2%;bottom:2%;z-index:30;background:var(--white);border:3px solid var(--outline);padding:8px 10px;display:grid;gap:1px;box-shadow:4px 4px 0 color-mix(in srgb,var(--outline) 22%,transparent)}
 .time-card span{font-size:.58rem;letter-spacing:.14em;font-weight:800}.time-card strong{font:600 1.1rem "Fredoka"}.time-card small{font-size:.68rem;font-weight:700}
 @keyframes drift{from{transform:translateX(-10%)}to{transform:translateX(520%)}}
+@keyframes starFloat{
+  0%,100%{transform:translateY(0) scale(var(--star-scale,1))}
+  50%{transform:translateY(-14px) scale(var(--star-scale,1))}
+}
 @keyframes twinkle{0%,100%{opacity:.5;transform:scale(.82)}50%{opacity:1;transform:scale(1.15)}}
 @keyframes lightBlink{0%,100%{filter:brightness(.9)}50%{filter:brightness(1.45) drop-shadow(0 0 6px var(--yellow))}}
 @keyframes noteBob{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-9px) rotate(5deg)}}

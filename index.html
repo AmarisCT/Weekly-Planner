@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css?v=20260925-5" />
+  <link rel="stylesheet" href="home.css?v=20260925-6" />
 </head>
 <body data-period="afternoon">
   <header class="home-nav">
@@ -58,9 +58,13 @@
           <div class="cloud cloud-one"></div>
           <div class="cloud cloud-two"></div>
           <div class="cloud cloud-three"></div>
-          <div class="skyline">
+          <div class="weather-rain" aria-hidden="true"></div>
+          <div class="weather-snow" aria-hidden="true">
             <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
           </div>
+          <div class="weather-fog" aria-hidden="true"></div>
+          <div class="outside-hills hill-one"></div>
+          <div class="outside-hills hill-two"></div>
         </div>
         <div class="window-line window-v"></div>
         <div class="window-line window-h"></div>
@@ -159,10 +163,11 @@
         <span id="periodLabel">AFTERNOON LIGHT</span>
         <strong id="greetingText">good afternoon</strong>
         <small id="miniClock">2:31</small>
+        <small id="weatherStatus">local weather loading…</small>
       </div>
     </section>
   </main>
 
-  <script src="home.js?v=20260925-5"></script>
+  <script src="home.js?v=20260925-6"></script>
 </body>
 </html>

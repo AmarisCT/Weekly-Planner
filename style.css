@@ -674,3 +674,18 @@ select {
   .monthly-box,
   .monthly-lines { min-height: 0.68in; }
 }
+
+.account-wrap{position:relative}
+.account-button{gap:8px}
+.account-menu{
+  position:absolute;right:0;top:48px;width:170px;padding:7px;z-index:70;
+  border:1px solid var(--deep-rose);background:rgba(255,251,249,.98);
+  box-shadow:0 12px 28px var(--shadow)
+}
+.account-menu[hidden]{display:none}
+.account-menu a,.account-menu button{
+  width:100%;min-height:40px;border:0;background:transparent;color:var(--deep-rose);
+  display:flex;align-items:center;padding:0 10px;text-decoration:none;text-align:left;
+  font:inherit;font-size:.7rem;letter-spacing:.08em;cursor:pointer
+}
+.account-menu a:hover,.account-menu button:hover{background:color-mix(in srgb,var(--deep-rose) 10%,transparent)}

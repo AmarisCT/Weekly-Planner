@@ -1,194 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#ff8fc9" />
-  <title>Weekly Planner Home | Amaris CT</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7a9c7">
+  <title>The Weekly Planner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css?v=20260925-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css?v=20260925-10">
 </head>
-<body data-period="afternoon">
-  <header class="home-nav">
-    <div class="home-brand">THE WEEKLY PLANNER</div>
+<body>
+  <main class="home">
+    <div class="scene" id="scene">
+      <img class="scene-art" src="assets/homepage-scene.webp?v=20260925-10" alt="A cozy pink kawaii desk room for The Weekly Planner">
 
-    <div class="home-account">
-      <a class="home-login" id="homeLogin" href="login.html">LOGIN</a>
+      <div class="sky-live" id="skyLive" aria-hidden="true">
+        <div class="rain"></div>
+        <div class="snow"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="fog"></div>
+      </div>
 
-      <div class="home-account-wrap" id="homeAccountWrap" hidden>
-        <button class="home-account-button" id="homeAccountButton" type="button" aria-haspopup="menu" aria-expanded="false">
-          <span id="homeAccountName">ACCOUNT</span><span aria-hidden="true">▼</span>
+      <div class="twinkles" aria-hidden="true">
+        <i class="twinkle t1">✦</i><i class="twinkle t2">✦</i><i class="twinkle t3">✦</i><i class="twinkle t4">✦</i><i class="twinkle t5">✦</i><i class="twinkle t6">✦</i><i class="twinkle t7">✦</i><i class="twinkle t8">✦</i><i class="twinkle t9">✦</i><i class="twinkle t10">✦</i><i class="twinkle t11">✦</i><i class="twinkle t12">✦</i><i class="twinkle t13">✦</i><i class="twinkle t14">✦</i>
+      </div>
+
+      <a class="monitor-hit" href="planner.html" aria-label="Open the Weekly Planner"></a>
+      <a class="login-hit" id="homeLogin" href="login.html" aria-label="Log in"></a>
+
+      <div class="account-wrap" id="homeAccountWrap" hidden>
+        <button class="account-button" id="homeAccountButton" type="button" aria-expanded="false">
+          <span id="homeAccountName">ACCOUNT</span><span>▼</span>
         </button>
-        <div class="home-account-menu" id="homeAccountMenu" role="menu" hidden>
-          <a href="planner.html" role="menuitem">OPEN PLANNER</a>
-          <a href="planner.html?customize=1" role="menuitem">CUSTOMIZE</a>
-          <button id="homeLogout" type="button" role="menuitem">LOG OUT</button>
+        <div class="account-menu" id="homeAccountMenu" hidden>
+          <a href="planner.html">OPEN PLANNER</a>
+          <a href="planner.html?customize=1">CUSTOMIZE</a>
+          <button id="homeLogout" type="button">LOG OUT</button>
         </div>
       </div>
     </div>
-  </header>
-
-  <main class="room-shell">
-    <section class="room" id="roomScene" aria-label="Animated illustrated planner room">
-      <div class="room-light"></div>
-
-      <div class="string-lights string-left" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i>
-      </div>
-      <div class="string-lights string-right" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i>
-      </div>
-
-      <div class="hanging-stars stars-left" aria-hidden="true">
-        <span class="star s1"></span><span class="star s2"></span><span class="star s3"></span><span class="star s4"></span><span class="star s5"></span>
-      </div>
-      <div class="hanging-stars stars-right" aria-hidden="true">
-        <span class="star s1"></span><span class="star s2"></span><span class="star s3"></span><span class="star s4"></span><span class="star s5"></span>
-      </div>
-
-      <div class="window" aria-label="The view outside changes with the time of day">
-        <div class="sky">
-          <div class="sun"></div>
-          <div class="moon"><span></span></div>
-          <div class="night-stars" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-          <div class="cloud cloud-one"></div>
-          <div class="cloud cloud-two"></div>
-          <div class="cloud cloud-three"></div>
-          <div class="weather-rain" aria-hidden="true"></div>
-          <div class="weather-snow" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-          <div class="weather-fog" aria-hidden="true"></div>
-          <div class="outside-hills hill-one"></div>
-          <div class="outside-hills hill-two"></div>
-        </div>
-        <div class="window-line window-v"></div>
-        <div class="window-line window-h"></div>
-      </div>
-
-      <div class="curtain-panel curtain-panel-left" aria-hidden="true"><span class="curtain-bow">♡</span></div>
-      <div class="curtain-panel curtain-panel-right" aria-hidden="true"><span class="curtain-bow">♡</span></div>
-      <div class="curtain-line curtain-one"></div>
-      <div class="curtain-line curtain-two"></div>
-
-      <div class="music-note note-one">♪</div>
-      <div class="music-note note-two">♫</div>
-
-      <div class="left-shelf">
-        <div class="radio">
-          <div class="radio-speaker"></div>
-          <div class="radio-dial"></div>
-          <div class="radio-line"></div>
-        </div>
-        <div class="shelf-plant">
-          <div class="plant-pot-small"></div>
-          <i class="pl p1"></i><i class="pl p2"></i><i class="pl p3"></i><i class="pl p4"></i>
-        </div>
-      </div>
-
-      <div class="desk">
-        <div class="desk-back"></div>
-        <div class="desk-top"></div>
-
-        <div class="flower-pot">
-          <div class="pink-pot"></div>
-          <div class="stem stem-a"></div><div class="stem stem-b"></div><div class="stem stem-c"></div>
-          <div class="flower f1"><i></i></div>
-          <div class="flower f2"><i></i></div>
-          <div class="flower f3"><i></i></div>
-        </div>
-
-        <div class="mug">
-          <div class="mug-face">•ᴗ•</div>
-          <div class="mug-handle"></div>
-          <div class="steam st1"></div><div class="steam st2"></div>
-        </div>
-
-        <div class="handheld" aria-hidden="true">
-          <div class="handheld-left"><span>+</span></div>
-          <div class="handheld-screen"><span>♡</span></div>
-          <div class="handheld-right"><i></i><i></i></div>
-        </div>
-
-        <div class="book-stack"><i></i><i></i><i></i></div>
-
-        <div class="rose-toy" aria-hidden="true"><span></span><i></i></div>
-
-        <div class="berry-plush" aria-hidden="true">
-          <div class="berry-leaf"></div>
-          <div class="berry-body"><span>• ᴗ •</span></div>
-        </div>
-
-        <div class="cat-plush" aria-hidden="true">
-          <div class="cat-ear ear-a"></div><div class="cat-ear ear-b"></div>
-          <div class="cat-head"><span>• ᴗ •</span></div>
-          <div class="cat-body"></div>
-        </div>
-
-        <a class="monitor" id="plannerMonitor" href="planner.html" aria-label="Open the weekly planner">
-          <div class="monitor-frame">
-            <div class="monitor-screen">
-              <div class="screen-cloud c1"></div>
-              <div class="screen-cloud c2"></div>
-              <div class="mini-planner">
-                <div class="mini-eyebrow">MY WEEK AT A GLANCE</div>
-                <div class="mini-title">WEEKLY PLANNER</div>
-                <div class="mini-grid">
-                  <i></i><i></i><i></i><i></i><i></i><i></i>
-                </div>
-              </div>
-              <div class="screen-sparkle sp1">✦</div>
-              <div class="screen-sparkle sp2">✦</div>
-            </div>
-          </div>
-          <div class="monitor-stand"></div>
-          <div class="monitor-base"></div>
-          <div class="monitor-hint">OPEN PLANNER</div>
-        </a>
-
-        <div class="keyboard" aria-hidden="true">
-          <div class="keyboard-keys">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-        </div>
-
-        <div class="headphones" aria-hidden="true">
-          <div class="headband"></div>
-          <div class="earcup earcup-left"></div>
-          <div class="earcup earcup-right"></div>
-        </div>
-
-        <div class="bunny-plush" aria-hidden="true">
-          <div class="bunny-ear be1"></div><div class="bunny-ear be2"></div>
-          <div class="bunny-head"><span>• ᴗ •</span></div>
-          <div class="bunny-body"></div>
-        </div>
-
-        <div class="flower-cup" aria-hidden="true">
-          <div class="flower-cup-pot">♡</div>
-          <div class="fc-stem fs1"></div><div class="fc-stem fs2"></div>
-          <div class="fc-flower ff1"></div><div class="fc-flower ff2"></div>
-        </div>
-
-        <div class="pen pen-one"></div>
-        <div class="pen pen-two"></div>
-        <div class="eraser"></div>
-      </div>
-
-      <div class="time-card">
-        <span id="periodLabel">AFTERNOON LIGHT</span>
-        <strong id="greetingText">good afternoon</strong>
-        <small id="miniClock">2:31</small>
-        <small id="weatherStatus">local weather loading…</small>
-      </div>
-    </section>
   </main>
-
-  <script src="home.js?v=20260925-6"></script>
+  <script src="home.js?v=20260925-10"></script>
 </body>
 </html>

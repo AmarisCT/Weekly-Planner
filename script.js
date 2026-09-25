@@ -15,6 +15,14 @@ const accentColor = document.querySelector('#accentColor');
 const backgroundImageUrl = document.querySelector('#backgroundImageUrl');
 const backgroundImageFile = document.querySelector('#backgroundImageFile');
 const backgroundSize = document.querySelector('#backgroundSize');
+const backgroundPosition = document.querySelector('#backgroundPosition');
+const patternScale = document.querySelector('#patternScale');
+const patternScaleWrap = document.querySelector('#patternScaleWrap');
+const patternScaleValue = document.querySelector('#patternScaleValue');
+const backgroundDropZone = document.querySelector('#backgroundDropZone');
+const backgroundPreview = document.querySelector('#backgroundPreview');
+const backgroundPreviewImage = document.querySelector('#backgroundPreviewImage');
+const removeBackgroundImage = document.querySelector('#removeBackgroundImage');
 const imageOptions = document.querySelector('#imageOptions');
 const resetTheme = document.querySelector('#resetTheme');
 const presetButtons = document.querySelectorAll('[data-preset]');
@@ -35,7 +43,9 @@ const defaultTheme = {
   paperColor: '#fffaf8',
   accentColor: '#8f565d',
   backgroundImage: '',
-  backgroundSize: 'cover'
+  backgroundSize: 'cover',
+  backgroundPosition: 'center center',
+  patternScale: 180
 };
 
 const presets = {
@@ -46,7 +56,9 @@ const presets = {
     paperColor: '#fffaf8',
     accentColor: '#8f565d',
     backgroundImage: '',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    patternScale: 180
   },
   cream: {
     backgroundStyle: 'stripes',
@@ -55,7 +67,9 @@ const presets = {
     paperColor: '#fffdf6',
     accentColor: '#7a6654',
     backgroundImage: '',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    patternScale: 180
   },
   lavender: {
     backgroundStyle: 'stripes',
@@ -64,7 +78,9 @@ const presets = {
     paperColor: '#fffaff',
     accentColor: '#6f587f',
     backgroundImage: '',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    patternScale: 180
   },
   dark: {
     backgroundStyle: 'solid',
@@ -73,7 +89,9 @@ const presets = {
     paperColor: '#f4edf3',
     accentColor: '#6a4459',
     backgroundImage: '',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
+    backgroundPosition: 'center center',
+    patternScale: 180
   }
 };
 
@@ -140,6 +158,19 @@ function saveTheme(theme) {
   localStorage.setItem(userKey('theme'), JSON.stringify(theme));
 }
 
+function getImageLayout(theme) {
+  const layout = theme.backgroundSize || 'cover';
+  const patternPixels = Math.max(40, Math.min(500, Number(theme.patternScale) || 180));
+
+  if (layout === 'pattern') return { size: `${patternPixels}px auto`, repeat: 'repeat' };
+  if (layout === 'repeat-x') return { size: `${patternPixels}px auto`, repeat: 'repeat-x' };
+  if (layout === 'repeat-y') return { size: `auto ${patternPixels}px`, repeat: 'repeat-y' };
+  if (layout === 'stretch') return { size: '100% 100%', repeat: 'no-repeat' };
+  if (layout === 'contain') return { size: 'contain', repeat: 'no-repeat' };
+  if (layout === 'auto') return { size: 'auto', repeat: 'no-repeat' };
+  return { size: 'cover', repeat: 'no-repeat' };
+}
+
 function applyTheme(theme, save = false) {
   const root = document.documentElement;
   document.body.classList.remove('theme-solid', 'theme-image');
@@ -149,13 +180,17 @@ function applyTheme(theme, save = false) {
   root.style.setProperty('--paper', theme.paperColor);
   root.style.setProperty('--deep-rose', theme.accentColor);
 
+  const imageLayout = getImageLayout(theme);
+
   if (theme.backgroundStyle === 'solid') {
     document.body.classList.add('theme-solid');
   } else if (theme.backgroundStyle === 'image') {
     document.body.classList.add('theme-image');
     const image = theme.backgroundImage ? `url("${theme.backgroundImage.replace(/"/g, '\\"')}")` : 'none';
     root.style.setProperty('--custom-bg-image', image);
-    root.style.setProperty('--custom-bg-size', theme.backgroundSize || 'cover');
+    root.style.setProperty('--custom-bg-size', imageLayout.size);
+    root.style.setProperty('--custom-bg-repeat', imageLayout.repeat);
+    root.style.setProperty('--custom-bg-position', theme.backgroundPosition || 'center center');
   }
 
   backgroundStyle.value = theme.backgroundStyle;
@@ -165,9 +200,23 @@ function applyTheme(theme, save = false) {
   accentColor.value = theme.accentColor;
   backgroundImageUrl.value = theme.backgroundImage?.startsWith('data:') ? '' : (theme.backgroundImage || '');
   backgroundSize.value = theme.backgroundSize || 'cover';
+  backgroundPosition.value = theme.backgroundPosition || 'center center';
+  patternScale.value = String(theme.patternScale || 180);
+  patternScaleValue.textContent = `${patternScale.value}px`;
 
-  imageOptions.classList.toggle('visible', theme.backgroundStyle === 'image');
+  const imageMode = theme.backgroundStyle === 'image';
+  const repeatMode = ['pattern', 'repeat-x', 'repeat-y'].includes(theme.backgroundSize);
+  imageOptions.classList.toggle('visible', imageMode);
+  patternScaleWrap.classList.toggle('visible', imageMode && repeatMode);
   stripeColor.closest('.theme-control').style.opacity = theme.backgroundStyle === 'stripes' ? '1' : '.45';
+
+  if (theme.backgroundImage) {
+    backgroundPreviewImage.src = theme.backgroundImage;
+    backgroundPreview.hidden = false;
+  } else {
+    backgroundPreviewImage.removeAttribute('src');
+    backgroundPreview.hidden = true;
+  }
 
   if (save) saveTheme(theme);
 }
@@ -181,7 +230,9 @@ function readThemeControls() {
     paperColor: paperColor.value,
     accentColor: accentColor.value,
     backgroundImage: current.backgroundImage || backgroundImageUrl.value.trim(),
-    backgroundSize: backgroundSize.value
+    backgroundSize: backgroundSize.value,
+    backgroundPosition: backgroundPosition.value,
+    patternScale: Number(patternScale.value) || 180
   };
 }
 
@@ -248,7 +299,7 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && themePanel.classList.contains('open')) closePanel();
 });
 
-[backgroundStyle, pageColor, stripeColor, paperColor, accentColor, backgroundSize].forEach((control) => {
+[backgroundStyle, pageColor, stripeColor, paperColor, accentColor, backgroundSize, backgroundPosition, patternScale].forEach((control) => {
   control.addEventListener('input', () => {
     const theme = readThemeControls();
     applyTheme(theme, true);
@@ -266,9 +317,8 @@ backgroundImageUrl.addEventListener('change', () => {
   applyTheme(theme, true);
 });
 
-backgroundImageFile.addEventListener('change', () => {
-  const file = backgroundImageFile.files?.[0];
-  if (!file) return;
+function useBackgroundFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
 
   const reader = new FileReader();
   reader.onload = () => {
@@ -276,8 +326,51 @@ backgroundImageFile.addEventListener('change', () => {
     theme.backgroundImage = reader.result;
     theme.backgroundStyle = 'image';
     applyTheme(theme, true);
+    backgroundImageFile.value = '';
   };
   reader.readAsDataURL(file);
+}
+
+backgroundImageFile.addEventListener('change', () => {
+  useBackgroundFile(backgroundImageFile.files?.[0]);
+});
+
+['dragenter', 'dragover'].forEach((eventName) => {
+  backgroundDropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    backgroundDropZone.classList.add('drag-over');
+  });
+});
+
+['dragleave', 'drop'].forEach((eventName) => {
+  backgroundDropZone.addEventListener(eventName, (event) => {
+    event.preventDefault();
+    backgroundDropZone.classList.remove('drag-over');
+  });
+});
+
+backgroundDropZone.addEventListener('drop', (event) => {
+  useBackgroundFile(event.dataTransfer?.files?.[0]);
+});
+
+backgroundDropZone.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    backgroundImageFile.click();
+  }
+});
+
+removeBackgroundImage.addEventListener('click', () => {
+  const theme = readThemeControls();
+  theme.backgroundImage = '';
+  theme.backgroundStyle = 'stripes';
+  backgroundImageUrl.value = '';
+  backgroundImageFile.value = '';
+  applyTheme(theme, true);
+});
+
+patternScale.addEventListener('input', () => {
+  patternScaleValue.textContent = `${patternScale.value}px`;
 });
 
 presetButtons.forEach((button) => {

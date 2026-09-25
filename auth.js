@@ -49,7 +49,7 @@ signupForm.addEventListener('submit', (event) => {
   localStorage.setItem('weeklyPlanner.currentUser', email);
 
   message.textContent = 'Account created. Opening your planner...';
-  window.location.href = 'index.html';
+  window.location.href = 'planner.html';
 });
 
 loginForm.addEventListener('submit', (event) => {
@@ -67,5 +67,5 @@ loginForm.addEventListener('submit', (event) => {
 
   localStorage.setItem('weeklyPlanner.currentUser', email);
   message.textContent = 'Login successful. Opening your planner...';
-  window.location.href = 'index.html';
+  window.location.href = 'planner.html';
 });

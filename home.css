@@ -271,3 +271,216 @@ body[data-period="night"] .cloud{opacity:.24}
   .pen,.eraser{display:none}
   .time-card{left:1.5%;bottom:1.5%;padding:6px 8px}
 }
+
+/* Reference-style refinements: rounded illustrated objects, square controls only */
+.home-brand{
+  background:transparent;
+  border:0;
+  box-shadow:none;
+  padding:0;
+  font-size:.82rem;
+  text-shadow:2px 2px 0 rgba(255,255,255,.35);
+}
+.home-login,
+.home-account-button,
+.home-account-menu,
+.home-account-menu a,
+.home-account-menu button{
+  border-radius:0 !important;
+}
+
+/* Everything decorative can be soft/rounded like the reference */
+.window{
+  border-radius:28px;
+}
+.sky{
+  border-radius:22px;
+}
+.monitor-frame{
+  border-radius:22px;
+}
+.monitor-screen{
+  border-radius:14px;
+}
+.mini-planner{
+  border-radius:10px;
+}
+.monitor-stand{
+  border-radius:0 0 10px 10px;
+}
+.monitor-base{
+  border-radius:14px 14px 5px 5px;
+}
+.keyboard{
+  border-radius:18px;
+}
+.keyboard-keys i{
+  border-radius:4px;
+}
+.handheld-left{
+  border-radius:18px 0 0 18px;
+}
+.handheld-right{
+  border-radius:0 18px 18px 0;
+}
+.handheld-screen{
+  border-radius:4px;
+}
+.book-stack i{
+  border-radius:6px;
+}
+.plant-pot-small,
+.pink-pot{
+  border-radius:6px 6px 15px 15px;
+}
+.mug{
+  border-radius:10px 10px 18px 18px;
+}
+.radio{
+  border-radius:18px;
+}
+.time-card{
+  border-radius:16px;
+}
+.cat-body{
+  border-radius:45% 45% 28% 28%;
+}
+
+/* Make the composition feel fuller and closer to the supplied kawaii desk scene */
+.room{
+  background:
+    radial-gradient(circle at 82% 16%,rgba(255,255,255,.13) 0 2%,transparent 2.3%),
+    radial-gradient(circle at 8% 20%,rgba(255,255,255,.11) 0 1.5%,transparent 1.8%),
+    linear-gradient(to bottom,var(--wall) 0 72%,var(--wall-2) 72% 100%);
+}
+.window{
+  left:24%;
+  top:4%;
+  width:43%;
+  height:49%;
+}
+.left-shelf{
+  top:45%;
+}
+.desk{
+  height:46%;
+}
+.monitor{
+  right:7%;
+  top:-39%;
+  width:30%;
+  height:72%;
+}
+.handheld{
+  left:40%;
+  top:10%;
+  width:20%;
+  height:28%;
+}
+.flower-pot{
+  left:12%;
+  top:0;
+}
+.mug{
+  left:27%;
+  top:16%;
+}
+.cat-plush{
+  left:64%;
+  top:-4%;
+}
+
+/* More lively candy colors, especially in daytime */
+body[data-period="morning"]{
+  --wall:#ffc5dd;
+  --wall-2:#ff8fbe;
+  --desk:#ff74ae;
+  --desk-edge:#d94e91;
+  --pink:#ff5ca9;
+  --pink-light:#ffd8eb;
+  --purple:#ad7cff;
+  --yellow:#ffd65b;
+  --aqua:#62d9e3;
+  --mint:#7ee3b6;
+  --blue:#69a9ff;
+  --sky-top:#7bcaff;
+  --sky-bottom:#ffd7f0;
+  --screen:#ffabd4;
+  --screen-ink:#934e80;
+}
+body[data-period="afternoon"]{
+  --wall:#ffb0d6;
+  --wall-2:#ff82bb;
+  --desk:#ff6cae;
+  --desk-edge:#d94a92;
+  --pink:#ff58a6;
+  --pink-light:#ffd4e9;
+  --purple:#9b7cff;
+  --yellow:#ffd45c;
+  --aqua:#5cd7dc;
+  --mint:#78dfb2;
+  --blue:#61adff;
+  --sky-top:#72c3ff;
+  --sky-bottom:#ffc6e7;
+  --screen:#ff9dce;
+  --screen-ink:#8a487a;
+}
+body[data-period="sunset"]{
+  --wall:#ff9fc8;
+  --wall-2:#f56aab;
+  --desk:#ed5da2;
+  --desk-edge:#c54886;
+  --pink:#ff4b9f;
+  --pink-light:#ffc4e0;
+  --purple:#9568f4;
+  --yellow:#ffcf56;
+  --aqua:#59cad7;
+  --mint:#6fd1a8;
+  --blue:#7d8fff;
+  --sky-top:#a36cf1;
+  --sky-bottom:#ff8ca8;
+  --screen:#ff8ac1;
+  --screen-ink:#783b70;
+}
+
+/* Add more decorative sparkle/heart energy without changing controls */
+.room::after{
+  content:"✦  ♡  ✦";
+  position:absolute;
+  top:3%;
+  left:2%;
+  z-index:6;
+  color:var(--yellow);
+  font:700 26px "Fredoka",sans-serif;
+  letter-spacing:9px;
+  text-shadow:2px 2px 0 var(--outline);
+  transform:rotate(-4deg);
+  pointer-events:none;
+}
+.wall-print{
+  border-radius:14px;
+}
+.print-one{
+  background:var(--pink-light);
+}
+.screen-cloud{
+  border-radius:30px;
+}
+
+/* Keep mobile as one full illustrated scene, scaled instead of restacked */
+@media(max-width:900px){
+  .window{left:24%;top:4%;width:43%;height:49%}
+  .left-shelf{display:block;top:45%;width:18%}
+  .monitor{right:7%;top:-39%;width:30%;height:72%}
+  .handheld{left:40%;top:10%;width:20%;height:28%}
+  .cat-plush{left:64%;top:-4%;width:9%;height:38%}
+  .flower-pot{left:12%;top:0;width:12%;height:42%;transform:none}
+  .mug{left:27%;top:16%;width:7%;height:28%;transform:none}
+  .keyboard{right:12%;top:43%;width:24%;height:15%}
+  .headphones{display:block;right:2%;top:35%;width:10%;height:35%}
+  .music-note{display:block}
+  .pen,.eraser{display:block}
+}
+@media(max-width:640px){
+  .home-brand{font-size:.72rem}
+}

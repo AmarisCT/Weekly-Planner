@@ -484,3 +484,279 @@ body[data-period="sunset"]{
 @media(max-width:640px){
   .home-brand{font-size:.72rem}
 }
+
+
+/* --- composition reset: match the supplied pink desk-room reference --- */
+.room-shell{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  width:100vw;
+  height:100vh;
+}
+.room{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:max(100vw,177.7778vh);
+  height:max(56.25vw,100vh);
+  min-width:0;
+  min-height:0;
+  transform:translate(-50%,-50%);
+  overflow:hidden;
+}
+.home-nav{
+  padding:18px 22px;
+}
+.home-brand{
+  font-size:.78rem;
+}
+.window{
+  left:21%;
+  top:7%;
+  width:43%;
+  height:46%;
+  border-radius:22px;
+}
+.window-v{left:50%}
+.window-h{top:54%}
+.curtain-one{left:16%}
+.curtain-two{left:68%}
+.left-shelf{
+  left:1%;
+  top:45%;
+  width:15%;
+  height:14%;
+}
+.desk{
+  height:43%;
+}
+.desk-back{
+  top:24%;
+  height:6%;
+}
+.desk-top{
+  top:30%;
+  height:25%;
+}
+.flower-pot{
+  left:13%;
+  top:4%;
+  width:10%;
+  height:37%;
+}
+.mug{
+  left:25%;
+  top:18%;
+  width:6.4%;
+  height:25%;
+}
+.handheld{
+  left:39%;
+  top:14%;
+  width:18%;
+  height:25%;
+}
+.book-stack{
+  left:58%;
+  top:15%;
+  width:10%;
+}
+.cat-plush{
+  left:63%;
+  top:0;
+  width:8%;
+  height:34%;
+}
+.monitor{
+  right:8%;
+  top:-44%;
+  width:29%;
+  height:72%;
+}
+.keyboard{
+  right:12%;
+  top:45%;
+  width:25%;
+  height:14%;
+}
+.headphones{
+  right:1.5%;
+  top:38%;
+  width:9%;
+  height:31%;
+}
+.pen-one{left:35%;top:58%}
+.pen-two{left:43%;top:66%}
+.eraser{left:54%;top:61%}
+.time-card{
+  left:2.3%;
+  bottom:2.5%;
+  border-radius:12px;
+  max-width:220px;
+}
+.time-card small:last-child{
+  margin-top:2px;
+  font-size:.58rem;
+  opacity:.82;
+}
+
+/* Weather-driven window scene */
+.outside-hills{
+  position:absolute;
+  bottom:-8%;
+  border:3px solid var(--outline);
+  border-bottom:0;
+  border-radius:50% 50% 0 0;
+  z-index:1;
+}
+.hill-one{
+  left:-10%;
+  width:68%;
+  height:31%;
+  background:color-mix(in srgb,var(--purple) 58%,var(--pink-light));
+}
+.hill-two{
+  right:-12%;
+  width:72%;
+  height:27%;
+  background:color-mix(in srgb,var(--mint) 58%,var(--blue));
+}
+.weather-rain{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  opacity:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(105deg,transparent 0 18px,rgba(255,255,255,.62) 18px 21px,transparent 21px 38px);
+  background-size:120px 120px;
+  animation:rainMove .65s linear infinite;
+}
+.weather-snow{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  opacity:0;
+  pointer-events:none;
+}
+.weather-snow i{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 4px rgba(255,255,255,.8);
+  animation:snowFall 5s linear infinite;
+}
+.weather-snow i:nth-child(1){left:8%;top:-5%;animation-delay:-1s}
+.weather-snow i:nth-child(2){left:20%;top:-8%;animation-delay:-3s}
+.weather-snow i:nth-child(3){left:35%;top:-3%;animation-delay:-2s}
+.weather-snow i:nth-child(4){left:48%;top:-10%;animation-delay:-4s}
+.weather-snow i:nth-child(5){left:61%;top:-6%;animation-delay:-1.7s}
+.weather-snow i:nth-child(6){left:74%;top:-4%;animation-delay:-2.6s}
+.weather-snow i:nth-child(7){left:86%;top:-7%;animation-delay:-.7s}
+.weather-snow i:nth-child(8){left:94%;top:-2%;animation-delay:-3.5s}
+.weather-fog{
+  position:absolute;
+  inset:0;
+  z-index:4;
+  opacity:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to bottom,transparent 15%,rgba(255,255,255,.52) 38%,rgba(255,255,255,.35) 60%,transparent 88%);
+}
+body[data-weather="rain"] .weather-rain,
+body[data-weather="storm"] .weather-rain{opacity:.88}
+body[data-weather="snow"] .weather-snow{opacity:1}
+body[data-weather="fog"] .weather-fog{opacity:1}
+body[data-weather="cloudy"] .cloud{opacity:.95}
+body[data-weather="clear"] .cloud-two,
+body[data-weather="clear"] .cloud-three{opacity:.35}
+body[data-weather="storm"] .sky{
+  filter:saturate(.72) brightness(.72);
+}
+body[data-weather="rain"] .sky{
+  filter:saturate(.8) brightness(.84);
+}
+body[data-weather="fog"] .sky{
+  filter:saturate(.55) brightness(.96);
+}
+body[data-weather="snow"] .sky{
+  filter:saturate(.55) brightness(1.05);
+}
+body[data-weather="cloudy"] .sky{
+  filter:saturate(.75) brightness(.93);
+}
+
+/* Real-time sky palettes */
+body[data-sky="dawn"]{
+  --sky-top:#8d8cf7;
+  --sky-bottom:#ffc0c7;
+  --room-glow:rgba(255,140,155,.28);
+}
+body[data-sky="day"]{
+  --sky-top:#63bfff;
+  --sky-bottom:#c9f4ff;
+  --room-glow:rgba(255,245,211,.20);
+}
+body[data-sky="golden"]{
+  --sky-top:#8f69e8;
+  --sky-bottom:#ff9f7b;
+  --room-glow:rgba(255,137,98,.34);
+}
+body[data-sky="night"]{
+  --sky-top:#080b25;
+  --sky-bottom:#283a73;
+  --room-glow:rgba(105,88,224,.22);
+}
+body[data-sky="night"] .sun{opacity:0!important}
+body[data-sky="night"] .moon{opacity:1!important;transform:translateY(0)!important}
+body[data-sky="night"] .night-stars{opacity:1!important}
+body[data-sky="dawn"] .sun,
+body[data-sky="golden"] .sun{background:#ffd277}
+
+/* Make the whole room feel denser / closer to the reference */
+.string-left{left:2%;width:35%}
+.string-right{right:2%;width:35%}
+.stars-left{left:7%}
+.stars-right{right:7%}
+.note-one{left:7.5%;top:34%}
+.note-two{left:14%;top:41%}
+.radio{width:50%}
+.shelf-plant{right:2%;width:47%}
+
+/* Square controls only. Decorative objects stay rounded. */
+.home-login,
+.home-account-button,
+.home-account-menu,
+.home-account-menu a,
+.home-account-menu button{
+  border-radius:0!important;
+}
+
+@keyframes rainMove{
+  from{background-position:0 0}
+  to{background-position:-60px 120px}
+}
+@keyframes snowFall{
+  from{transform:translateY(-15%) translateX(0)}
+  to{transform:translateY(650%) translateX(22px)}
+}
+
+@media(max-width:900px){
+  .room{
+    width:max(100vw,177.7778vh);
+    height:max(56.25vw,100vh);
+  }
+  .window{left:21%;top:7%;width:43%;height:46%}
+  .left-shelf{display:block;left:1%;top:45%;width:15%;height:14%}
+  .monitor{right:8%;top:-44%;width:29%;height:72%}
+  .flower-pot{left:13%;top:4%;width:10%;height:37%;transform:none}
+  .mug{left:25%;top:18%;width:6.4%;height:25%;transform:none}
+  .handheld{left:39%;top:14%;width:18%;height:25%}
+  .book-stack{left:58%;top:15%;width:10%}
+  .cat-plush{left:63%;top:0;width:8%;height:34%}
+  .keyboard{right:12%;top:45%;width:25%;height:14%}
+  .headphones{display:block;right:1.5%;top:38%;width:9%;height:31%}
+  .music-note,.pen,.eraser{display:block}
+}

@@ -66,19 +66,51 @@
           <input id="backgroundImageUrl" type="url" placeholder="https://example.com/image.jpg">
         </label>
 
+        <label class="background-drop-zone" id="backgroundDropZone" for="backgroundImageFile" tabindex="0">
+          <input class="background-file-input" id="backgroundImageFile" type="file" accept="image/*">
+          <strong>DROP AN IMAGE HERE</strong>
+          <span>or click to choose a photo</span>
+        </label>
+
+        <div class="background-preview" id="backgroundPreview" hidden>
+          <img id="backgroundPreviewImage" alt="Selected background preview">
+          <button class="remove-background-image" id="removeBackgroundImage" type="button">REMOVE IMAGE</button>
+        </div>
+
         <label class="theme-control">
-          <span>Or upload an image</span>
-          <input id="backgroundImageFile" type="file" accept="image/*">
+          <span>Image layout</span>
+          <select id="backgroundSize">
+            <option value="cover">One big background — cover</option>
+            <option value="contain">One big background — fit</option>
+            <option value="stretch">Stretch to page</option>
+            <option value="auto">Original size</option>
+            <option value="pattern">Repeat as pattern</option>
+            <option value="repeat-x">Repeat across</option>
+            <option value="repeat-y">Repeat down</option>
+          </select>
         </label>
 
         <label class="theme-control">
-          <span>Image fit</span>
-          <select id="backgroundSize">
-            <option value="cover">Cover</option>
-            <option value="contain">Contain</option>
-            <option value="auto">Original size</option>
+          <span>Image position</span>
+          <select id="backgroundPosition">
+            <option value="center center">Center</option>
+            <option value="center top">Top</option>
+            <option value="center bottom">Bottom</option>
+            <option value="left center">Left</option>
+            <option value="right center">Right</option>
+            <option value="left top">Top left</option>
+            <option value="right top">Top right</option>
+            <option value="left bottom">Bottom left</option>
+            <option value="right bottom">Bottom right</option>
           </select>
         </label>
+
+        <label class="theme-control pattern-scale-control" id="patternScaleWrap">
+          <span>Pattern size <output id="patternScaleValue">180px</output></span>
+          <input id="patternScale" type="range" min="40" max="500" step="10" value="180">
+        </label>
+
+        <p class="image-helper">Use <b>cover</b> for one large photo, or <b>repeat as pattern</b> for a Tumblr-style tiled background. Your image and settings save with your planner on this browser.</p>
       </div>
 
       <div class="theme-presets" aria-label="Theme presets">

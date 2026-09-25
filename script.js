@@ -6,6 +6,12 @@ const customizeButton = document.querySelector('#customizeButton');
 const themePanel = document.querySelector('#themePanel');
 const closeThemePanel = document.querySelector('#closeThemePanel');
 const panelBackdrop = document.querySelector('#panelBackdrop');
+const accountWrap = document.querySelector('#accountWrap');
+const accountButton = document.querySelector('#accountButton');
+const accountName = document.querySelector('#accountName');
+const accountMenu = document.querySelector('#accountMenu');
+const menuCustomize = document.querySelector('#menuCustomize');
+const logoutButton = document.querySelector('#logoutButton');
 
 const backgroundStyle = document.querySelector('#backgroundStyle');
 const pageColor = document.querySelector('#pageColor');
@@ -128,6 +134,8 @@ function updateLoginButton() {
   if (!currentUser) {
     loginButton.textContent = 'LOGIN';
     loginButton.href = 'login.html';
+    loginButton.classList.remove('is-hidden');
+    accountWrap?.classList.add('is-hidden');
     customizeButton.classList.add('is-hidden');
     return;
   }
@@ -135,9 +143,10 @@ function updateLoginButton() {
   const users = getUsers();
   const name = users[currentUser]?.name || 'ACCOUNT';
 
-  loginButton.textContent = name.toUpperCase();
-  loginButton.href = 'login.html';
-  customizeButton.classList.remove('is-hidden');
+  loginButton.classList.add('is-hidden');
+  accountWrap?.classList.remove('is-hidden');
+  if (accountName) accountName.textContent = name.toUpperCase();
+  customizeButton.classList.add('is-hidden');
 }
 
 function getSavedTheme() {
@@ -292,6 +301,28 @@ editableFields.forEach((field) => {
 printButton.addEventListener('click', () => window.print());
 
 customizeButton.addEventListener('click', openThemePanel);
+menuCustomize?.addEventListener('click', () => {
+  accountMenu.hidden = true;
+  accountButton.setAttribute('aria-expanded', 'false');
+  openThemePanel();
+});
+accountButton?.addEventListener('click', () => {
+  const open = accountMenu.hidden;
+  accountMenu.hidden = !open;
+  accountButton.setAttribute('aria-expanded', String(open));
+});
+logoutButton?.addEventListener('click', () => {
+  localStorage.removeItem('weeklyPlanner.currentUser');
+  accountMenu.hidden = true;
+  accountButton.setAttribute('aria-expanded', 'false');
+  updateLoginButton();
+});
+document.addEventListener('click', (event) => {
+  if (accountWrap && !accountWrap.contains(event.target)) {
+    accountMenu.hidden = true;
+    accountButton?.setAttribute('aria-expanded', 'false');
+  }
+});
 closeThemePanel.addEventListener('click', closePanel);
 panelBackdrop.addEventListener('click', closePanel);
 
@@ -387,3 +418,6 @@ resetTheme.addEventListener('click', () => {
 
 updateLoginButton();
 applyTheme(getSavedTheme());
+
+const params = new URLSearchParams(window.location.search);
+if (params.get('customize') === '1' && isLoggedIn()) openThemePanel();

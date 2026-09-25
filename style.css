@@ -24,6 +24,21 @@ body {
     var(--stripe-a) 0 34px,
     var(--stripe-b) 34px 68px
   );
+  background-size: auto;
+  background-position: center top;
+  background-attachment: fixed;
+}
+
+body.theme-solid {
+  background-image: none;
+}
+
+body.theme-image {
+  background-image: var(--custom-bg-image, none);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: var(--custom-bg-size, cover);
 }
 
 button, input, select { font: inherit; }
@@ -32,7 +47,7 @@ button, input, select { font: inherit; }
   position: fixed;
   top: 18px;
   right: 18px;
-  z-index: 10;
+  z-index: 30;
   display: flex;
   gap: 8px;
 }
@@ -63,10 +78,162 @@ button, input, select { font: inherit; }
   background: #7f4a53;
 }
 
+.is-hidden {
+  display: none !important;
+}
+
+.theme-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 50;
+  width: min(92vw, 390px);
+  height: 100vh;
+  padding: 24px;
+  background: rgba(255, 251, 249, 0.98);
+  border-left: 1.5px solid var(--deep-rose);
+  box-shadow: -12px 0 30px rgba(83, 46, 53, 0.18);
+  transform: translateX(102%);
+  transition: transform 220ms ease;
+  overflow-y: auto;
+}
+
+.theme-panel.open {
+  transform: translateX(0);
+}
+
+.panel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(63, 34, 40, 0.22);
+}
+
+.theme-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(143, 86, 93, 0.25);
+}
+
+.theme-kicker {
+  margin: 0 0 4px;
+  font-size: 0.64rem;
+  letter-spacing: 0.18em;
+}
+
+.theme-panel h2 {
+  margin: 0;
+  font-family: "Parisienne", cursive;
+  font-size: 2.2rem;
+  font-weight: 400;
+}
+
+.panel-close {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--deep-rose);
+  border-radius: 0;
+  background: transparent;
+  color: var(--deep-rose);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.theme-controls {
+  display: grid;
+  gap: 16px;
+  padding-top: 18px;
+}
+
+.theme-control {
+  display: grid;
+  gap: 7px;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.theme-control input,
+.theme-control select {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  border: 1px solid var(--deep-rose);
+  border-radius: 0;
+  background: #fff;
+  padding: 0 10px;
+  color: var(--deep-rose);
+}
+
+.theme-control input[type="color"] {
+  padding: 3px;
+  cursor: pointer;
+}
+
+.theme-control input[type="file"] {
+  height: auto;
+  padding: 9px;
+  text-transform: none;
+  font-size: 0.75rem;
+}
+
+.color-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.image-options {
+  display: none;
+  gap: 14px;
+}
+
+.image-options.visible {
+  display: grid;
+}
+
+.theme-presets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.preset-button,
+.theme-reset {
+  min-height: 40px;
+  border: 1px solid var(--deep-rose);
+  border-radius: 0;
+  background: #fffaf8;
+  color: var(--deep-rose);
+  cursor: pointer;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+.preset-button:hover,
+.theme-reset:hover {
+  background: var(--deep-rose);
+  color: #fff;
+}
+
+.theme-note {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: rgba(112, 70, 76, 0.82);
+}
+
 .action-button:focus-visible,
 input:focus-visible,
 select:focus-visible,
-.lined-field:focus-visible {
+.lined-field:focus-visible,
+.panel-close:focus-visible,
+.preset-button:focus-visible,
+.theme-reset:focus-visible {
   outline: 2px solid var(--deep-rose);
   outline-offset: 2px;
 }
@@ -178,14 +345,14 @@ select {
   line-height: 25px;
   font-family: "Libre Baskerville", Georgia, serif;
   font-size: 0.82rem;
-  color: #70464c;
+  color: var(--deep-rose);
   caret-color: var(--deep-rose);
   background-image: repeating-linear-gradient(
     to bottom,
     transparent 0,
     transparent 24px,
-    var(--line) 24px,
-    var(--line) 25px
+    color-mix(in srgb, var(--deep-rose) 36%, transparent) 24px,
+    color-mix(in srgb, var(--deep-rose) 36%, transparent) 25px
   );
   background-size: 100% 25px;
 }
@@ -223,8 +390,8 @@ select {
     to bottom,
     transparent 0,
     transparent 21px,
-    var(--line) 21px,
-    var(--line) 22px
+    color-mix(in srgb, var(--deep-rose) 36%, transparent) 21px,
+    color-mix(in srgb, var(--deep-rose) 36%, transparent) 22px
   );
   background-size: 100% 22px;
 }
@@ -240,7 +407,9 @@ select {
   .top-actions {
     position: static;
     justify-content: center;
+    flex-wrap: wrap;
     margin: 14px auto 0;
+    padding: 0 10px;
   }
 
   .planner {
@@ -286,6 +455,7 @@ select {
   .lined-field,
   .sunday-box .lined-field { min-height: 92px; }
   .action-button { min-width: 84px; height: 38px; padding: 0 10px; }
+  .color-row { grid-template-columns: 1fr; }
 }
 
 @page {
@@ -299,17 +469,13 @@ select {
     min-height: 11in;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    background-color: var(--stripe-a) !important;
-    background-image: repeating-linear-gradient(
-      90deg,
-      var(--stripe-a) 0 0.28in,
-      var(--stripe-b) 0.28in 0.56in
-    ) !important;
   }
 
   body { margin: 0; }
 
-  .top-actions { display: none !important; }
+  .top-actions,
+  .theme-panel,
+  .panel-backdrop { display: none !important; }
 
   .planner {
     width: 100%;
@@ -360,8 +526,8 @@ select {
       to bottom,
       transparent 0,
       transparent calc(0.18in - 1px),
-      var(--line) calc(0.18in - 1px),
-      var(--line) 0.18in
+      color-mix(in srgb, var(--deep-rose) 36%, transparent) calc(0.18in - 1px),
+      color-mix(in srgb, var(--deep-rose) 36%, transparent) 0.18in
     );
     background-size: 100% 0.18in;
   }
@@ -385,14 +551,6 @@ select {
   .goal-lines {
     min-height: 0.5in;
     line-height: 0.16in;
-    background-image: repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent calc(0.16in - 1px),
-      var(--line) calc(0.16in - 1px),
-      var(--line) 0.16in
-    );
-    background-size: 100% 0.16in;
   }
 
   .monthly-box,

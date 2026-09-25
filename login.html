@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4c9d1" />
+  <title>Login | Weekly Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --deep-rose:#8f565d;
+      --stripe-a:#f7d9df;
+      --stripe-b:#efc3cc;
+      --paper:rgba(255,251,249,.96);
+      --shadow:rgba(116,67,75,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;display:grid;place-items:center;
+      color:var(--deep-rose);
+      font-family:"Libre Baskerville",Georgia,serif;
+      background-color:var(--stripe-a);
+      background-image:repeating-linear-gradient(
+        90deg,
+        var(--stripe-a) 0 34px,
+        var(--stripe-b) 34px 68px
+      );
+      padding:24px;
+    }
+    .auth-shell{
+      width:min(100%,520px);
+      background:var(--paper);
+      border:1.5px solid var(--deep-rose);
+      box-shadow:0 8px 24px var(--shadow);
+      padding:28px;
+    }
+    .brand{text-align:center;margin-bottom:22px}
+    .eyebrow{margin:0 0 5px;font-size:.67rem;letter-spacing:.28em}
+    h1{margin:0;font-size:2.7rem;font-weight:400;letter-spacing:.05em}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;margin:22px 0 20px}
+    .tab{
+      height:44px;border:1px solid var(--deep-rose);border-radius:0;
+      background:#fffaf8;color:var(--deep-rose);cursor:pointer;
+      letter-spacing:.08em;font-size:.75rem
+    }
+    .tab.active{background:var(--deep-rose);color:#fff}
+    form{display:grid;gap:14px}
+    label{display:grid;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+    input{
+      height:44px;border:1px solid var(--deep-rose);border-radius:0;
+      background:#fff;color:var(--deep-rose);padding:0 12px;font:inherit
+    }
+    .submit{
+      height:46px;border:1px solid var(--deep-rose);border-radius:0;
+      background:var(--deep-rose);color:white;cursor:pointer;
+      letter-spacing:.08em;margin-top:4px
+    }
+    .message{min-height:20px;margin:12px 0 0;font-size:.8rem;text-align:center}
+    .back{
+      display:block;text-align:center;margin-top:18px;color:var(--deep-rose);
+      font-size:.78rem;text-decoration:none
+    }
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <main class="auth-shell">
+    <div class="brand">
+      <p class="eyebrow">WEEKLY PLANNER</p>
+      <h1 id="authTitle">LOGIN</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" id="loginTab" type="button">LOGIN</button>
+      <button class="tab" id="signupTab" type="button">SIGN UP</button>
+    </div>
+
+    <form id="loginForm">
+      <label>
+        Email
+        <input id="loginEmail" type="email" autocomplete="email" required>
+      </label>
+      <label>
+        Password
+        <input id="loginPassword" type="password" autocomplete="current-password" required>
+      </label>
+      <button class="submit" type="submit">LOGIN</button>
+    </form>
+
+    <form id="signupForm" class="hidden">
+      <label>
+        Name
+        <input id="signupName" type="text" autocomplete="name" required>
+      </label>
+      <label>
+        Email
+        <input id="signupEmail" type="email" autocomplete="email" required>
+      </label>
+      <label>
+        Password
+        <input id="signupPassword" type="password" minlength="6" autocomplete="new-password" required>
+      </label>
+      <button class="submit" type="submit">CREATE ACCOUNT</button>
+    </form>
+
+    <p class="message" id="message" aria-live="polite"></p>
+    <a class="back" href="index.html">← BACK TO PLANNER</a>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

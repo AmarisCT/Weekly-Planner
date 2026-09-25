@@ -175,7 +175,11 @@ body[data-period="night"] .cloud{opacity:.24}
   border:3px solid var(--outline);
   clip-path:polygon(50% 0,61% 34%,98% 36%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 36%,39% 34%);
   transform-origin:center;
-  animation:starFloat 3.2s ease-in-out infinite;
+  opacity:var(--star-min-opacity,.6);
+  animation:
+    starFloat var(--float-duration,3.2s) ease-in-out infinite,
+    starTwinkle var(--twinkle-duration,2.5s) ease-in-out infinite;
+  animation-delay:var(--float-delay,0s),var(--twinkle-delay,0s);
 }
 .star::before{
   content:"";
@@ -187,25 +191,29 @@ body[data-period="night"] .cloud{opacity:.24}
   bottom:100%;
 }
 .star.s1{
-  --star-scale:.8;
-  left:5%;
-  top:35%;
-  animation-delay:0s;
-  animation-duration:3.1s;
+  --star-scale:.8;--float-duration:3.1s;--twinkle-duration:2.2s;
+  --float-delay:0s;--twinkle-delay:.2s;--star-min-opacity:.55;
+  left:5%;top:35%;
 }
 .star.s2{
-  --star-scale:1.15;
-  left:42%;
-  top:61%;
-  animation-delay:.7s;
-  animation-duration:3.8s;
+  --star-scale:1.15;--float-duration:3.8s;--twinkle-duration:3.1s;
+  --float-delay:.7s;--twinkle-delay:1s;--star-min-opacity:.62;
+  left:42%;top:61%;
 }
 .star.s3{
-  --star-scale:.62;
-  right:2%;
-  top:23%;
-  animation-delay:1.25s;
-  animation-duration:2.7s;
+  --star-scale:.62;--float-duration:2.7s;--twinkle-duration:1.9s;
+  --float-delay:1.25s;--twinkle-delay:.5s;--star-min-opacity:.48;
+  right:2%;top:23%;
+}
+.star.s4{
+  --star-scale:.95;--float-duration:4.4s;--twinkle-duration:2.8s;
+  --float-delay:.35s;--twinkle-delay:1.4s;--star-min-opacity:.58;
+  left:22%;top:14%;
+}
+.star.s5{
+  --star-scale:.72;--float-duration:3.5s;--twinkle-duration:2.05s;
+  --float-delay:1.6s;--twinkle-delay:.9s;--star-min-opacity:.52;
+  left:72%;top:48%;
 }
 .music-note{position:absolute;z-index:12;font:700 38px "Fredoka";color:var(--blue);text-shadow:2px 2px 0 var(--outline);animation:noteBob 3s ease-in-out infinite}
 .note-one{left:8%;top:34%}.note-two{left:15%;top:41%;color:var(--yellow);animation-delay:-1.2s}
@@ -279,6 +287,16 @@ body[data-period="night"] .cloud{opacity:.24}
 @keyframes starFloat{
   0%,100%{transform:translateY(0) scale(var(--star-scale,1))}
   50%{transform:translateY(-14px) scale(var(--star-scale,1))}
+}
+@keyframes starTwinkle{
+  0%,100%{
+    opacity:var(--star-min-opacity,.6);
+    filter:drop-shadow(0 0 0 rgba(255,255,255,0));
+  }
+  50%{
+    opacity:1;
+    filter:drop-shadow(0 0 9px rgba(255,245,190,.95));
+  }
 }
 @keyframes twinkle{0%,100%{opacity:.5;transform:scale(.82)}50%{opacity:1;transform:scale(1.15)}}
 @keyframes lightBlink{0%,100%{filter:brightness(.9)}50%{filter:brightness(1.45) drop-shadow(0 0 6px var(--yellow))}}

@@ -28,27 +28,42 @@ body {
 
 button, input, select { font: inherit; }
 
-.print-button {
+.top-actions {
   position: fixed;
   top: 18px;
   right: 18px;
   z-index: 10;
-  border: 1px solid rgba(143, 86, 93, 0.55);
-  border-radius: 999px;
-  padding: 10px 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 92px;
+  height: 40px;
+  border: 1px solid rgba(143, 86, 93, 0.7);
+  border-radius: 0;
+  padding: 0 14px;
   color: #fffaf8;
   background: var(--deep-rose);
   box-shadow: 0 5px 14px var(--shadow);
   cursor: pointer;
-  transition: transform 160ms ease, box-shadow 160ms ease;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
-.print-button:hover {
+.action-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 7px 18px var(--shadow);
+  background: #7f4a53;
 }
 
-.print-button:focus-visible,
+.action-button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 .lined-field:focus-visible {
@@ -222,9 +237,9 @@ select {
 .monthly-lines { min-height: 98px; }
 
 @media (max-width: 720px) {
-  .print-button {
+  .top-actions {
     position: static;
-    display: block;
+    justify-content: center;
     margin: 14px auto 0;
   }
 
@@ -264,20 +279,13 @@ select {
 
 @media (max-width: 430px) {
   h1 { font-size: 2.2rem; }
-
   .eyebrow { font-size: 0.58rem; }
-
   .weekly-goals-grid { grid-template-columns: 1fr; }
-
   .day-box,
-  .sunday-box {
-    min-height: 132px;
-  }
-
+  .sunday-box { min-height: 132px; }
   .lined-field,
-  .sunday-box .lined-field {
-    min-height: 92px;
-  }
+  .sunday-box .lined-field { min-height: 92px; }
+  .action-button { min-width: 84px; height: 38px; padding: 0 10px; }
 }
 
 @page {
@@ -301,7 +309,7 @@ select {
 
   body { margin: 0; }
 
-  .print-button { display: none !important; }
+  .top-actions { display: none !important; }
 
   .planner {
     width: 100%;
@@ -310,26 +318,10 @@ select {
   }
 
   .planner-header { margin-bottom: 0.07in; }
-
-  .eyebrow {
-    font-size: 6pt;
-    margin-bottom: 0;
-  }
-
-  h1 {
-    font-size: 27pt;
-    line-height: 0.95;
-  }
-
-  .date-fields {
-    gap: 0.38in;
-    margin-top: 0.07in;
-  }
-
-  .field-group {
-    font-size: 6.8pt;
-    gap: 0.06in;
-  }
+  .eyebrow { font-size: 6pt; margin-bottom: 0; }
+  h1 { font-size: 27pt; line-height: 0.95; }
+  .date-fields { gap: 0.38in; margin-top: 0.07in; }
+  .field-group { font-size: 6.8pt; gap: 0.06in; }
 
   input, select {
     min-width: 1.2in;
@@ -339,9 +331,7 @@ select {
   }
 
   .days-grid,
-  .weekly-goals-grid {
-    gap: 0.055in;
-  }
+  .weekly-goals-grid { gap: 0.055in; }
 
   .planner-box {
     box-shadow: none;
@@ -406,7 +396,5 @@ select {
   }
 
   .monthly-box,
-  .monthly-lines {
-    min-height: 0.68in;
-  }
+  .monthly-lines { min-height: 0.68in; }
 }

@@ -1,0 +1,412 @@
+:root {
+  --deep-rose: #8f565d;
+  --rose: #aa6f78;
+  --soft-rose: #efbcc7;
+  --stripe-a: #f7d9df;
+  --stripe-b: #efc3cc;
+  --paper: rgba(255, 251, 249, 0.94);
+  --line: rgba(185, 125, 135, 0.38);
+  --shadow: rgba(116, 67, 75, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+html { min-height: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--deep-rose);
+  font-family: "Libre Baskerville", Georgia, serif;
+  background-color: var(--stripe-a);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--stripe-a) 0 34px,
+    var(--stripe-b) 34px 68px
+  );
+}
+
+button, input, select { font: inherit; }
+
+.print-button {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  border: 1px solid rgba(143, 86, 93, 0.55);
+  border-radius: 999px;
+  padding: 10px 16px;
+  color: #fffaf8;
+  background: var(--deep-rose);
+  box-shadow: 0 5px 14px var(--shadow);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.print-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 18px var(--shadow);
+}
+
+.print-button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.lined-field:focus-visible {
+  outline: 2px solid var(--deep-rose);
+  outline-offset: 2px;
+}
+
+.planner {
+  width: min(100% - 32px, 960px);
+  margin: 0 auto;
+  padding: 34px 0 46px;
+}
+
+.planner-header {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.eyebrow {
+  margin: 0 0 3px;
+  font-size: 0.67rem;
+  letter-spacing: 0.34em;
+  color: rgba(143, 86, 93, 0.8);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.45rem, 7vw, 4.7rem);
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--deep-rose);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.date-fields {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 42px;
+  margin-top: 18px;
+}
+
+.field-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.field-group span { white-space: nowrap; }
+
+input, select {
+  min-width: 165px;
+  border: 0;
+  border-bottom: 1.5px solid var(--deep-rose);
+  border-radius: 0;
+  padding: 5px 3px 4px;
+  color: var(--deep-rose);
+  background: rgba(255, 251, 249, 0.44);
+}
+
+select {
+  min-width: 145px;
+  cursor: pointer;
+}
+
+.days-grid,
+.weekly-goals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.planner-box {
+  border: 1.5px solid var(--deep-rose);
+  background: var(--paper);
+  box-shadow: 0 4px 12px var(--shadow);
+  overflow: hidden;
+}
+
+.day-box {
+  min-height: 145px;
+  padding: 12px 0 0;
+}
+
+.sunday-box {
+  grid-column: 1 / -1;
+  min-height: 128px;
+}
+
+.day-box h2,
+.goal-box h3 {
+  margin: 0;
+  padding: 0 13px 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--deep-rose);
+}
+
+.lined-field {
+  width: 100%;
+  min-height: 105px;
+  padding: 1px 12px 5px;
+  border: 0;
+  outline: 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  line-height: 25px;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 0.82rem;
+  color: #70464c;
+  caret-color: var(--deep-rose);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 24px,
+    var(--line) 24px,
+    var(--line) 25px
+  );
+  background-size: 100% 25px;
+}
+
+.sunday-box .lined-field { min-height: 87px; }
+
+.script-heading {
+  margin: 12px 0 5px 6px;
+  font-family: "Parisienne", cursive;
+  font-size: 1.95rem;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--deep-rose);
+}
+
+.weekly-goals-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.goal-box {
+  min-height: 98px;
+  padding-top: 9px;
+}
+
+.goal-box h3 {
+  padding-bottom: 4px;
+  font-size: 0.68rem;
+}
+
+.goal-lines {
+  min-height: 70px;
+  line-height: 22px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 21px,
+    var(--line) 21px,
+    var(--line) 22px
+  );
+  background-size: 100% 22px;
+}
+
+.monthly-box {
+  min-height: 100px;
+  padding-top: 0;
+}
+
+.monthly-lines { min-height: 98px; }
+
+@media (max-width: 720px) {
+  .print-button {
+    position: static;
+    display: block;
+    margin: 14px auto 0;
+  }
+
+  .planner {
+    width: min(100% - 20px, 960px);
+    padding-top: 24px;
+  }
+
+  .date-fields {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 11px;
+    margin-top: 16px;
+  }
+
+  .field-group {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  input, select {
+    width: min(68%, 300px);
+    min-width: 0;
+  }
+
+  .days-grid,
+  .weekly-goals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sunday-box { grid-column: auto; }
+
+  .weekly-goals-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 430px) {
+  h1 { font-size: 2.2rem; }
+
+  .eyebrow { font-size: 0.58rem; }
+
+  .weekly-goals-grid { grid-template-columns: 1fr; }
+
+  .day-box,
+  .sunday-box {
+    min-height: 132px;
+  }
+
+  .lined-field,
+  .sunday-box .lined-field {
+    min-height: 92px;
+  }
+}
+
+@page {
+  size: Letter portrait;
+  margin: 0.22in;
+}
+
+@media print {
+  html, body {
+    width: 8.5in;
+    min-height: 11in;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: var(--stripe-a) !important;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--stripe-a) 0 0.28in,
+      var(--stripe-b) 0.28in 0.56in
+    ) !important;
+  }
+
+  body { margin: 0; }
+
+  .print-button { display: none !important; }
+
+  .planner {
+    width: 100%;
+    margin: 0;
+    padding: 0.08in 0.08in 0.06in;
+  }
+
+  .planner-header { margin-bottom: 0.07in; }
+
+  .eyebrow {
+    font-size: 6pt;
+    margin-bottom: 0;
+  }
+
+  h1 {
+    font-size: 27pt;
+    line-height: 0.95;
+  }
+
+  .date-fields {
+    gap: 0.38in;
+    margin-top: 0.07in;
+  }
+
+  .field-group {
+    font-size: 6.8pt;
+    gap: 0.06in;
+  }
+
+  input, select {
+    min-width: 1.2in;
+    font-size: 7pt;
+    padding: 0.015in 0.02in;
+    background: transparent;
+  }
+
+  .days-grid,
+  .weekly-goals-grid {
+    gap: 0.055in;
+  }
+
+  .planner-box {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .day-box {
+    min-height: 1.08in;
+    padding-top: 0.07in;
+  }
+
+  .sunday-box { min-height: 0.88in; }
+
+  .day-box h2,
+  .goal-box h3 {
+    padding: 0 0.08in 0.035in;
+    font-size: 6.5pt;
+  }
+
+  .lined-field {
+    min-height: 0.78in;
+    padding: 0 0.08in 0.03in;
+    font-size: 6.8pt;
+    line-height: 0.18in;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(0.18in - 1px),
+      var(--line) calc(0.18in - 1px),
+      var(--line) 0.18in
+    );
+    background-size: 100% 0.18in;
+  }
+
+  .sunday-box .lined-field { min-height: 0.58in; }
+
+  .script-heading {
+    margin: 0.055in 0 0.02in 0.035in;
+    font-size: 14pt;
+  }
+
+  .weekly-goals-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .goal-box {
+    min-height: 0.74in;
+    padding-top: 0.05in;
+  }
+
+  .goal-lines {
+    min-height: 0.5in;
+    line-height: 0.16in;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(0.16in - 1px),
+      var(--line) calc(0.16in - 1px),
+      var(--line) 0.16in
+    );
+    background-size: 100% 0.16in;
+  }
+
+  .monthly-box,
+  .monthly-lines {
+    min-height: 0.68in;
+  }
+}

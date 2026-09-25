@@ -1,6 +1,7 @@
 const monthSelect = document.querySelector('#month');
 const weekInput = document.querySelector('#weekOf');
 const printButton = document.querySelector('#printButton');
+const loginButton = document.querySelector('#loginButton');
 
 const editableFields = document.querySelectorAll(
   '[contenteditable="true"][data-key]'
@@ -28,6 +29,38 @@ function getLocalDateString(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+function getCurrentUser() {
+  return localStorage.getItem('weeklyPlanner.currentUser') || 'guest';
+}
+
+function userKey(key) {
+  return `weeklyPlanner.${getCurrentUser()}.${key}`;
+}
+
+function getUsers() {
+  try {
+    return JSON.parse(localStorage.getItem('weeklyPlanner.users')) || {};
+  } catch {
+    return {};
+  }
+}
+
+function updateLoginButton() {
+  const currentUser = localStorage.getItem('weeklyPlanner.currentUser');
+
+  if (!currentUser) {
+    loginButton.textContent = 'LOGIN';
+    loginButton.href = 'login.html';
+    return;
+  }
+
+  const users = getUsers();
+  const name = users[currentUser]?.name || 'ACCOUNT';
+
+  loginButton.textContent = name.toUpperCase();
+  loginButton.href = 'login.html';
+}
+
 months.forEach((name, index) => {
   const option = document.createElement('option');
   option.value = String(index);
@@ -35,29 +68,29 @@ months.forEach((name, index) => {
   monthSelect.appendChild(option);
 });
 
-const savedWeek = localStorage.getItem('weeklyPlanner.weekOf');
-const savedMonth = localStorage.getItem('weeklyPlanner.month');
 const today = new Date();
+const savedWeek = localStorage.getItem(userKey('weekOf'));
+const savedMonth = localStorage.getItem(userKey('month'));
 
 weekInput.value = savedWeek || getLocalDateString(today);
 monthSelect.value = savedMonth ?? String(today.getMonth());
 
 weekInput.addEventListener('change', () => {
-  localStorage.setItem('weeklyPlanner.weekOf', weekInput.value);
+  localStorage.setItem(userKey('weekOf'), weekInput.value);
 
   if (weekInput.value) {
     const selectedDate = new Date(`${weekInput.value}T12:00:00`);
     monthSelect.value = String(selectedDate.getMonth());
-    localStorage.setItem('weeklyPlanner.month', monthSelect.value);
+    localStorage.setItem(userKey('month'), monthSelect.value);
   }
 });
 
 monthSelect.addEventListener('change', () => {
-  localStorage.setItem('weeklyPlanner.month', monthSelect.value);
+  localStorage.setItem(userKey('month'), monthSelect.value);
 });
 
 editableFields.forEach((field) => {
-  const storageKey = `weeklyPlanner.${field.dataset.key}`;
+  const storageKey = userKey(field.dataset.key);
   const savedText = localStorage.getItem(storageKey);
 
   if (savedText) {
@@ -72,3 +105,5 @@ editableFields.forEach((field) => {
 printButton.addEventListener('click', () => {
   window.print();
 });
+
+updateLoginButton();

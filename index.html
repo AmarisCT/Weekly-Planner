@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f4c9d1" />
+  <title>Weekly Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <button class="print-button" id="printButton" type="button" aria-label="Print weekly planner">Print planner</button>
+
+  <main class="planner" aria-label="Weekly planner">
+    <header class="planner-header">
+      <p class="eyebrow">MY WEEK AT A GLANCE</p>
+      <h1>WEEKLY PLANNER</h1>
+
+      <div class="date-fields" aria-label="Planner date selectors">
+        <label class="field-group" for="weekOf">
+          <span>Week of:</span>
+          <input id="weekOf" type="date" aria-label="Select the week date" />
+        </label>
+
+        <label class="field-group" for="month">
+          <span>Month:</span>
+          <select id="month" aria-label="Select month"></select>
+        </label>
+      </div>
+    </header>
+
+    <section class="days-grid" aria-label="Days of the week">
+      <article class="planner-box day-box">
+        <h2>MONDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Monday plans" data-key="monday"></div>
+      </article>
+
+      <article class="planner-box day-box">
+        <h2>TUESDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Tuesday plans" data-key="tuesday"></div>
+      </article>
+
+      <article class="planner-box day-box">
+        <h2>WEDNESDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Wednesday plans" data-key="wednesday"></div>
+      </article>
+
+      <article class="planner-box day-box">
+        <h2>THURSDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Thursday plans" data-key="thursday"></div>
+      </article>
+
+      <article class="planner-box day-box">
+        <h2>FRIDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Friday plans" data-key="friday"></div>
+      </article>
+
+      <article class="planner-box day-box">
+        <h2>SATURDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Saturday plans" data-key="saturday"></div>
+      </article>
+
+      <article class="planner-box day-box sunday-box">
+        <h2>SUNDAY</h2>
+        <div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Sunday plans" data-key="sunday"></div>
+      </article>
+    </section>
+
+    <section class="goals-section" aria-label="Weekly goals">
+      <h2 class="script-heading">Weekly goals</h2>
+
+      <div class="weekly-goals-grid">
+        <article class="planner-box goal-box">
+          <h3>WEEK 1</h3>
+          <div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 1 goals" data-key="week1"></div>
+        </article>
+
+        <article class="planner-box goal-box">
+          <h3>WEEK 2</h3>
+          <div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 2 goals" data-key="week2"></div>
+        </article>
+
+        <article class="planner-box goal-box">
+          <h3>WEEK 3</h3>
+          <div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 3 goals" data-key="week3"></div>
+        </article>
+
+        <article class="planner-box goal-box">
+          <h3>WEEK 4</h3>
+          <div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 4 goals" data-key="week4"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="monthly-section" aria-label="Monthly goals">
+      <h2 class="script-heading">Monthly goals</h2>
+      <article class="planner-box monthly-box">
+        <div class="lined-field monthly-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Monthly goals" data-key="monthly"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

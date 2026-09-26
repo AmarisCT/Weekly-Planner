@@ -53,31 +53,63 @@ function minutesNow(timeZone){
   }
 }
 
+function setCelestialPosition(now,sunrise,sunset){
+  let isSun=false;
+  let progress=.5;
+
+  if(sunrise!==null&&sunset!==null){
+    isSun=now>=sunrise&&now<sunset;
+    if(isSun){
+      progress=Math.max(0,Math.min(1,(now-sunrise)/(sunset-sunrise)));
+    }else{
+      const nightLength=(1440-sunset)+sunrise;
+      const elapsed=now>=sunset?now-sunset:(1440-sunset)+now;
+      progress=Math.max(0,Math.min(1,elapsed/nightLength));
+    }
+  }else{
+    const hour=now/60;
+    isSun=hour>=6&&hour<20;
+    progress=isSun?(hour-6)/14:((hour>=20?hour-20:hour+4)/10);
+  }
+
+  const x=10+(progress*80);
+  const arc=Math.sin(Math.PI*progress);
+  const y=48-(arc*31);
+
+  document.body.dataset.celestial=isSun?'sun':'moon';
+  document.documentElement.style.setProperty('--celestial-x',x.toFixed(2)+'%');
+  document.documentElement.style.setProperty('--celestial-y',y.toFixed(2)+'%');
+}
+
 function applyTimeState(){
-  const now=minutesNow(liveTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const tz=liveTimezone||Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const now=minutesNow(tz);
   const sunrise=minuteValue(liveSunrise);
   const sunset=minuteValue(liveSunset);
 
   let period;
   if(sunrise!==null&&sunset!==null){
-    if(now>=sunrise-60&&now<sunrise+90)period='dawn';
-    else if(now>=sunrise+90&&now<sunset-75)period='day';
-    else if(now>=sunset-75&&now<sunset+60)period='dusk';
+    if(now>=sunrise-60&&now<sunrise+75)period='dawn';
+    else if(now>=sunrise+75&&now<sunset-75)period='day';
+    else if(now>=sunset-75&&now<sunset+55)period='dusk';
     else period='night';
   }else{
     const hour=Math.floor(now/60);
     period=hour<6||hour>=21?'night':hour<9?'dawn':hour<18?'day':'dusk';
   }
+
   document.body.dataset.time=period;
+  setCelestialPosition(now,sunrise,sunset);
 }
 
 async function refreshWeather(){
-  if(!liveCoords)return;
+  if(!liveCoords){applyTimeState();return}
+
   try{
     const u=new URL('https://api.open-meteo.com/v1/forecast');
     u.searchParams.set('latitude',liveCoords.lat);
     u.searchParams.set('longitude',liveCoords.lon);
-    u.searchParams.set('current','weather_code,is_day,temperature_2m,precipitation,rain,snowfall,cloud_cover');
+    u.searchParams.set('current','weather_code,cloud_cover,precipitation,rain,snowfall,wind_speed_10m');
     u.searchParams.set('daily','sunrise,sunset');
     u.searchParams.set('forecast_days','1');
     u.searchParams.set('timezone','auto');
@@ -93,41 +125,60 @@ async function refreshWeather(){
     const code=Number(d.current?.weather_code??0);
     const kind=weatherKind(code);
     const cloudCover=Math.max(0,Math.min(100,Number(d.current?.cloud_cover??0)));
-    let cloudOpacity=(cloudCover/100)*.54;
-    if(kind==='cloudy')cloudOpacity=Math.max(cloudOpacity,.28);
-    if(['rain','snow','storm'].includes(kind))cloudOpacity=Math.max(cloudOpacity,.42);
+    const precipitation=Math.max(0,Number(d.current?.precipitation??0));
+    const rainfall=Math.max(0,Number(d.current?.rain??0));
+    const snowfall=Math.max(0,Number(d.current?.snowfall??0));
+    const wind=Math.max(0,Number(d.current?.wind_speed_10m??0));
+
+    let cloudOpacity=.03+(cloudCover/100)*.68;
+    if(kind==='cloudy')cloudOpacity=Math.max(cloudOpacity,.34);
+    if(['rain','snow','storm'].includes(kind))cloudOpacity=Math.max(cloudOpacity,.48);
+
+    const rainOpacity=Math.min(.94,.36+Math.max(precipitation,rainfall)*.16);
+    const snowOpacity=Math.min(1,.72+snowfall*.10);
+    const cloudSpeed=Math.max(15,42-Math.min(27,wind*.55));
 
     document.body.dataset.weather=kind;
-    document.documentElement.style.setProperty('--cloud-opacity',String(Math.min(.72,cloudOpacity)));
+    document.documentElement.style.setProperty('--cloud-opacity',cloudOpacity.toFixed(2));
+    document.documentElement.style.setProperty('--rain-opacity',rainOpacity.toFixed(2));
+    document.documentElement.style.setProperty('--snow-opacity',snowOpacity.toFixed(2));
+    document.documentElement.style.setProperty('--cloud-speed',cloudSpeed.toFixed(1)+'s');
+
     applyTimeState();
   }catch(err){
     console.warn('Live weather unavailable',err);
+    document.body.dataset.weather='clear';
     applyTimeState();
   }
 }
 
 function startLiveWindow(){
+  document.body.dataset.weather='clear';
   applyTimeState();
 
-  if(!navigator.geolocation)return;
+  if(!navigator.geolocation){
+    document.body.dataset.location='unsupported';
+    return;
+  }
 
   navigator.geolocation.getCurrentPosition(
     pos=>{
       liveCoords={lat:pos.coords.latitude,lon:pos.coords.longitude};
       document.body.dataset.location='live';
+      document.body.dataset.locationAccuracy=Math.round(pos.coords.accuracy||0);
       refreshWeather();
     },
-    ()=>{
+    err=>{
       document.body.dataset.location='unavailable';
-      document.body.dataset.weather='clear';
+      document.body.dataset.locationError=String(err.code||'');
       applyTimeState();
     },
-    {enableHighAccuracy:false,timeout:8000,maximumAge:900000}
+    {enableHighAccuracy:true,timeout:10000,maximumAge:300000}
   );
 }
 
-setInterval(()=>applyTimeState(),60000);
-setInterval(()=>refreshWeather(),600000);
+setInterval(applyTimeState,60000);
+setInterval(refreshWeather,300000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshWeather()});
 
 startLiveWindow();

@@ -39,6 +39,46 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 }
 .account-menu a:hover,.account-menu button:hover{background:#ffe2ee}
 
+/* Clouds only: transparent overlay clipped to the open sky, with soft edge fades. */
+.window-clouds{
+  position:absolute;
+  left:29.2%;
+  top:15.5%;
+  width:27.8%;
+  height:29.5%;
+  z-index:7;
+  overflow:hidden;
+  pointer-events:none;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 91%,transparent 100%);
+  mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 91%,transparent 100%);
+}
+.cloud{
+  position:absolute;
+  left:-34%;
+  display:block;
+  width:22%;
+  height:16%;
+  border-radius:999px;
+  background:rgba(255,244,250,.58);
+  box-shadow:
+    1.8vw -.7vw 0 .15vw rgba(255,246,251,.54),
+    3.3vw .12vw 0 -.08vw rgba(255,239,247,.48),
+    4.8vw -.32vw 0 -.15vw rgba(255,248,252,.42);
+  filter:blur(.35px);
+  opacity:.78;
+  will-change:transform;
+  animation:windowCloudDrift 30s linear infinite;
+}
+.cloud-one{top:9%;animation-duration:34s}
+.cloud-two{top:44%;transform:scale(.72);opacity:.60;animation-duration:43s;animation-delay:-18s}
+.cloud-three{top:72%;transform:scale(.52);opacity:.42;animation-duration:52s;animation-delay:-35s}
+
+@keyframes windowCloudDrift{
+  from{left:-34%}
+  to{left:112%}
+}
+
+
 .twinkle{position:absolute;color:#ffe991;text-shadow:0 0 9px rgba(255,230,125,.95);font-size:18px;z-index:15;animation:twinkle var(--d,2.8s) ease-in-out infinite, bob var(--b,4s) ease-in-out infinite;pointer-events:none}
 .t1{left:26%;top:9%;--d:1.9s;--b:3.1s}.t2{left:31%;top:17%;--d:2.7s;--b:4.2s}.t3{left:37%;top:7%;--d:2.2s;--b:3.8s}.t4{left:43%;top:20%;--d:3.3s;--b:4.7s}.t5{left:49%;top:10%;--d:1.7s;--b:3.5s}.t6{left:54%;top:24%;--d:2.5s;--b:4.1s}.t7{left:60%;top:8%;--d:3s;--b:3.6s}
 .t8{left:23%;top:2%;--d:2.1s;--b:4.4s}.t9{left:28%;top:4%;--d:2.9s;--b:3.3s}.t10{left:35%;top:2%;--d:1.8s;--b:4.8s}.t11{left:52%;top:3%;--d:2.4s;--b:3.7s}.t12{left:58%;top:2%;--d:3.5s;--b:4.3s}.t13{left:64%;top:5%;--d:2.2s;--b:3.2s}.t14{left:69%;top:3%;--d:2.8s;--b:4.6s}
@@ -55,4 +95,4 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
   .account-button{min-width:112px;height:34px;font-size:9px}
   .account-menu{top:38px;width:150px}
 }
-@media(prefers-reduced-motion:reduce){.twinkle{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.twinkle,.cloud{animation:none!important}.cloud-one{left:18%}.cloud-two{left:52%}.cloud-three{left:74%}}

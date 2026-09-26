@@ -1,7 +1,5 @@
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:"Nunito",sans-serif}
-body{background:#efa0bd;overflow:hidden}
-.home{width:100vw;height:100vh;display:grid;place-items:center;background:#efa0bd}
+html,body{margin:0;min-height:100%;font-family:"Nunito",sans-serif}\nbody{background:#efa0bd;overflow:hidden;position:relative}\nbody::before{content:"";position:fixed;inset:-24px;z-index:0;pointer-events:none;background:url("assets/ChatGPT%20Image%20Sep%2026,%202026,%2007_15_49%20AM.png") center/cover no-repeat;filter:blur(14px) saturate(1.05);transform:scale(1.05)}\nbody::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(255,214,229,.12)}\n.home{position:relative;z-index:1;width:100vw;height:100vh;display:grid;place-items:center;background:transparent}
 .scene{
   position:relative;
   width:min(100vw,calc(100vh * 1.777895));

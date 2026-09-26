@@ -40,7 +40,6 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 .account-menu a:hover,.account-menu button:hover{background:#ffe2ee}
 
 .sky-live{
-  --cloud-opacity:.08;
   position:absolute;left:23.5%;top:6.4%;width:35.2%;height:55.2%;z-index:8;
   overflow:hidden;pointer-events:none;border-radius:1.5%;
   isolation:isolate;
@@ -82,7 +81,7 @@ body[data-time="night"] .sky-color{
 body[data-time="night"] .live-stars{opacity:.72}
 body[data-time="dusk"] .live-stars{opacity:.28}
 
-.weather-clouds{position:absolute;inset:0;z-index:3;opacity:var(--cloud-opacity);transition:opacity 2s ease}
+.weather-clouds{position:absolute;inset:0;z-index:3;opacity:var(--cloud-opacity,.08);transition:opacity 2s ease}
 .weather-clouds i{
   position:absolute;width:31%;height:10%;border-radius:999px;background:rgba(255,248,253,.72);
   box-shadow:32px -12px 0 7px rgba(255,248,253,.68),64px 2px 0 1px rgba(255,248,253,.58);

@@ -1,31 +1,9 @@
-const sceneArt=document.getElementById('sceneArt');
 const login=document.getElementById('homeLogin');
 const wrap=document.getElementById('homeAccountWrap');
 const button=document.getElementById('homeAccountButton');
 const nameEl=document.getElementById('homeAccountName');
 const menu=document.getElementById('homeAccountMenu');
 const logout=document.getElementById('homeLogout');
-
-async function loadSceneArtwork(){
-  try{
-    const urls=[
-      'assets/homepage-scene-1.txt?v=20260925-14',
-      'assets/homepage-scene-2.txt?v=20260925-14',
-      'assets/homepage-scene-3.txt?v=20260925-14'
-    ];
-    const parts=await Promise.all(urls.map(async url=>{
-      const r=await fetch(url,{cache:'no-store'});
-      if(!r.ok) throw new Error('scene part failed: '+url);
-      return (await r.text()).trim();
-    }));
-    sceneArt.onload=()=>document.body.classList.add('scene-ready');
-    sceneArt.onerror=()=>document.body.classList.add('scene-error');
-    sceneArt.src='data:image/webp;base64,'+parts.join('');
-  }catch(err){
-    console.error(err);
-    document.body.classList.add('scene-error');
-  }
-}
 
 function users(){try{return JSON.parse(localStorage.getItem('weeklyPlanner.users'))||{}}catch{return{}}}
 function closeMenu(){if(menu)menu.hidden=true;if(button)button.setAttribute('aria-expanded','false')}
@@ -55,5 +33,4 @@ if(navigator.geolocation){
   navigator.geolocation.getCurrentPosition(p=>weather(p.coords.latitude,p.coords.longitude),()=>weather(47.6062,-122.3321),{timeout:6000,maximumAge:900000});
 }else weather(47.6062,-122.3321);
 
-loadSceneArtwork();
 updateAccount();

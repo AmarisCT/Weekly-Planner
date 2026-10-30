@@ -125,6 +125,37 @@
     setTimeout(() => el.classList.remove('flare'), 1300);
   }
 
+  /* ---------- clock radio ---------- */
+
+  const clock = document.getElementById('radioClock');
+  const clockTime = clock?.querySelector('.rc-time');
+  const clockAmPm = clock?.querySelector('.rc-ampm');
+  const clockIcon = clock?.querySelector('.rc-icon');
+  const uses12h = new Intl.DateTimeFormat(undefined, { hour: 'numeric' }).resolvedOptions().hour12 !== false;
+
+  function tickClock() {
+    if (!clockTime) return;
+    const now = new Date();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    let hours = now.getHours();
+    if (uses12h) {
+      clockAmPm.textContent = hours < 12 ? 'AM' : 'PM';
+      hours = hours % 12 || 12;
+    } else {
+      clockAmPm.textContent = '';
+      hours = String(hours).padStart(2, '0');
+    }
+    const html = `${hours}<span class="colon">:</span>${minutes}`;
+    if (clockTime.innerHTML !== html) clockTime.innerHTML = html; // only when the minute changes
+  }
+
+  function setClockIcon(icon) {
+    if (clockIcon) clockIcon.textContent = icon || '';
+  }
+
+  tickClock();
+  setInterval(tickClock, 1000);
+
   /* ---------- a tiny music box (original melody, Web Audio) ---------- */
 
   let audio = null;
@@ -233,6 +264,132 @@
     });
   }
 
+  /* ---------- rain sounds (generated, no audio files) ---------- */
+
+  const isRaining = () => ['drizzle', 'rain', 'storm'].includes(window.skyInfo?.kind);
+
+  function noiseBuffer(ctx, seconds, brown = false) {
+    const length = Math.floor(ctx.sampleRate * seconds);
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < length; i += 1) {
+      const white = Math.random() * 2 - 1;
+      if (brown) {
+        last = (last + 0.02 * white) / 1.02;
+        data[i] = last * 3.5;
+      } else {
+        data[i] = white;
+      }
+    }
+    return buffer;
+  }
+
+  const rain = {
+    on: false,
+    nodes: [],
+    timers: [],
+    start() {
+      const a = getAudio();
+      if (!a) return false;
+      const { ctx } = a;
+      const kind = window.skyInfo?.kind || 'rain';
+      const level = kind === 'drizzle' ? 0.55 : kind === 'storm' ? 1 : 0.8;
+
+      const out = ctx.createGain();
+      out.gain.value = 0;
+      out.connect(ctx.destination);
+      out.gain.setTargetAtTime(0.16 * level, ctx.currentTime, 0.6);
+
+      // steady rainfall: filtered white noise
+      const hiss = ctx.createBufferSource();
+      hiss.buffer = noiseBuffer(ctx, 3);
+      hiss.loop = true;
+      const high = ctx.createBiquadFilter();
+      high.type = 'highpass';
+      high.frequency.value = 450;
+      const low = ctx.createBiquadFilter();
+      low.type = 'lowpass';
+      low.frequency.value = 2400;
+      const hissGain = ctx.createGain();
+      hissGain.gain.value = 0.55;
+      hiss.connect(high).connect(low).connect(hissGain).connect(out);
+      hiss.start();
+
+      // soft low rumble of rain on the roof
+      const rumble = ctx.createBufferSource();
+      rumble.buffer = noiseBuffer(ctx, 4, true);
+      rumble.loop = true;
+      const rumbleFilter = ctx.createBiquadFilter();
+      rumbleFilter.type = 'lowpass';
+      rumbleFilter.frequency.value = 420;
+      const rumbleGain = ctx.createGain();
+      rumbleGain.gain.value = 0.7;
+      rumble.connect(rumbleFilter).connect(rumbleGain).connect(out);
+      rumble.start();
+
+      // the odd droplet tapping the window
+      const tapBuffer = noiseBuffer(ctx, 0.05);
+      const tap = () => {
+        if (!this.on) return;
+        const src = ctx.createBufferSource();
+        src.buffer = tapBuffer;
+        const band = ctx.createBiquadFilter();
+        band.type = 'bandpass';
+        band.frequency.value = rand(1800, 5200);
+        band.Q.value = 6;
+        const g = ctx.createGain();
+        const t = ctx.currentTime;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(rand(0.25, 0.6), t + 0.004);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+        src.connect(band).connect(g).connect(out);
+        src.start(t);
+        this.timers.push(setTimeout(tap, rand(60, 260) / level));
+      };
+      tap();
+
+      // distant thunder during storms
+      if (kind === 'storm') {
+        const thunder = () => {
+          if (!this.on) return;
+          const src = ctx.createBufferSource();
+          src.buffer = noiseBuffer(ctx, 4, true);
+          const f = ctx.createBiquadFilter();
+          f.type = 'lowpass';
+          f.frequency.value = 160;
+          const g = ctx.createGain();
+          const t = ctx.currentTime;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.exponentialRampToValueAtTime(2.2, t + 0.35);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + 3.8);
+          src.connect(f).connect(g).connect(out);
+          src.start(t);
+          this.timers.push(setTimeout(thunder, rand(9000, 20000)));
+        };
+        this.timers.push(setTimeout(thunder, rand(3000, 7000)));
+      }
+
+      this.nodes = [out, hiss, rumble];
+      this.on = true;
+      return true;
+    },
+    stop() {
+      this.on = false;
+      this.timers.forEach(clearTimeout);
+      this.timers = [];
+      const [out, ...sources] = this.nodes;
+      if (out && audio) {
+        out.gain.setTargetAtTime(0, audio.ctx.currentTime, 0.25);
+        setTimeout(() => {
+          sources.forEach((src) => { try { src.stop(); } catch { /* already stopped */ } });
+          out.disconnect();
+        }, 1200);
+      }
+      this.nodes = [];
+    }
+  };
+
   /* ---------- the things in the room ---------- */
 
   const musicButtons = document.querySelectorAll('[data-thing="radio"], [data-thing="headphones"]');
@@ -240,22 +397,56 @@
 
   function setMusicLabels() {
     musicButtons.forEach((button) => {
-      const what = button.dataset.thing === 'radio' ? 'radio' : 'music';
-      const label = music.on ? `Turn off the ${what}` : `Turn on the ${what}`;
+      let label;
+      if (button.dataset.thing === 'radio') {
+        if (rain.on) label = 'Switch the radio to music';
+        else if (music.on) label = 'Turn off the radio';
+        else label = isRaining() ? 'Play rain sounds on the radio' : 'Turn on the radio';
+      } else {
+        label = music.on ? 'Turn off the music' : 'Turn on the music';
+      }
       button.setAttribute('aria-label', label);
-      button.setAttribute('aria-pressed', String(music.on));
+      button.setAttribute('aria-pressed', String(button.dataset.thing === 'radio' ? (music.on || rain.on) : music.on));
       button.dataset.tip = label.toLowerCase();
     });
+    setClockIcon(rain.on ? '☂' : music.on ? '♪' : '');
   }
 
-  function toggleMusic(x, y) {
-    if (music.on) {
-      music.stop();
-      bubble(x, y, pick(['music off', 'shh… quiet time', 'paused ♡']));
-    } else if (music.start()) {
+  function startMusic(x, y) {
+    if (rain.on) rain.stop();
+    if (music.start()) {
       bubble(x, y, pick(['♪ lo-fi for planning', '♪ now playing: cozy', '♫ a little music box tune']));
       burst(x, y + 3, ['♪', '♫', '♩'], 5);
     }
+  }
+
+  function startRain(x, y) {
+    if (music.on) music.stop();
+    if (rain.start()) {
+      bubble(x, y, pick(['☂ rain sounds on', '☂ cozy rain for planning', '☂ listening to the rain']));
+      burst(x, y + 3, ['☂', '💧'], 4, ['#9fb8ff', '#c8d6ff', '#ffffff'], 6);
+    }
+  }
+
+  function stopSound(x, y) {
+    music.stop();
+    rain.stop();
+    bubble(x, y, pick(['radio off', 'shh… quiet time', 'paused ♡']));
+  }
+
+  // Radio: off → (rain sounds, if it's raining where you are) → music → off.
+  function cycleRadio(x, y) {
+    if (rain.on) startMusic(x, y);
+    else if (music.on) stopSound(x, y);
+    else if (isRaining()) startRain(x, y);
+    else startMusic(x, y);
+    setMusicLabels();
+  }
+
+  // Headphones: music on/off.
+  function toggleMusic(x, y) {
+    if (music.on) stopSound(x, y);
+    else startMusic(x, y);
     setMusicLabels();
   }
 
@@ -273,7 +464,7 @@
       bubble(10.5, 49, pick(['purrrr… ♡', 'mrrp?', '*happy cat noises*', 'five more minutes…']));
       burst(10.5, 52, ['♡', '♥'], 6);
     },
-    radio() { toggleMusic(9, 59); },
+    radio() { cycleRadio(9, 59); },
     headphones() { toggleMusic(91, 67); },
     lamp() {
       const off = document.body.classList.toggle('lights-off');
@@ -293,8 +484,8 @@
       }
       const lines = {
         storm: ['stormy out there ⚡ stay cozy', 'did you hear that thunder?'],
-        rain: [`it's raining${where} ☂`, 'listen to the rain…', 'perfect planning weather ☂'],
-        drizzle: [`a little drizzle${where}`, 'soft rain today ☂'],
+        rain: [`it's raining${where} ☂`, 'listen to the rain… (try the radio ☂)', 'perfect planning weather ☂'],
+        drizzle: [`a little drizzle${where}`, 'soft rain today ☂ (try the radio)'],
         snow: [`it's snowing${where}! ❄`, 'snow day ❄'],
         fog: ['so foggy out', `misty${where} today`],
         overcast: ['grey skies today', `cloudy${where}`],
@@ -350,6 +541,7 @@
 
   setMusicLabels();
   setLampLabel();
+  document.addEventListener('sky:update', setMusicLabels);
 
   /* ---------- hover labels (mouse only) ---------- */
 
@@ -378,9 +570,23 @@
     : 'hi, night owl';
   const name = firstName();
   const verb = canHover ? 'click' : 'tap';
-  setTimeout(() => {
-    bubble(76.5, 29, `${hello}${name ? `, ${name.toLowerCase()}` : ''} ✦ ${verb} the computer to plan your week, or ${verb} around the room`, 6500, true);
-  }, 900);
+  const today = new Date();
+  const md = `${today.getMonth() + 1}-${today.getDate()}`;
+  const holiday = { '10-31': 'happy halloween 🎃', '12-24': 'merry christmas eve ✦', '12-25': 'merry christmas ✦', '12-31': "happy new year's eve ✦", '1-1': 'happy new year ✦', '2-14': "happy valentine's day ♡" }[md];
+  // Wait until the room picture has loaded before saying hello.
+  function whenRoomReady(callback) {
+    const root = document.documentElement;
+    if (root.classList.contains('room-ready')) { callback(); return; }
+    const watcher = new MutationObserver(() => {
+      if (root.classList.contains('room-ready')) { watcher.disconnect(); callback(); }
+    });
+    watcher.observe(root, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  whenRoomReady(() => setTimeout(() => {
+    const greeting = holiday || hello;
+    bubble(76.5, 29, `${greeting}${name ? `, ${name.toLowerCase()}` : ''} ✦ ${verb} the computer to plan your week, or ${verb} around the room`, 6500, true);
+  }, 700));
 
   if (!reduceMotion) {
     setInterval(() => {

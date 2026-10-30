@@ -1,7 +1,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:"Nunito",sans-serif}
 body{background:#efa0bd;overflow:hidden;position:relative}
-body::before{content:"";position:fixed;inset:-18px;z-index:0;pointer-events:none;background:url("assets/room-window-cutout.webp?v=20261030-3") center/cover no-repeat;filter:blur(10px) saturate(1.03);transform:scale(1.035)}
+body::before{content:"";position:fixed;inset:-18px;z-index:0;pointer-events:none;background:#efa0bd center/cover no-repeat;filter:blur(10px) saturate(1.03);transform:scale(1.035)}
 body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(255,214,229,.06)}
 .home{position:relative;z-index:1;width:100vw;height:100vh;display:grid;place-items:center;background:transparent}
 .scene{
@@ -270,6 +270,83 @@ body.lights-off .monitor-week{filter:brightness(.5) saturate(1.18) hue-rotate(-1
 }
 @media(prefers-reduced-motion:reduce){.mw-today{animation:none}}
 
+/* ---------- Clock radio ----------
+   Sits on the radio's display in the artwork (image px 185–264 × 598–628). */
+.radio-clock{
+  position:absolute;z-index:11;pointer-events:none;container-type:inline-size;
+  left:11.06%;top:63.55%;width:4.72%;height:3.19%;
+  display:flex;align-items:center;justify-content:center;gap:2px;border-radius:5px;overflow:hidden;
+  background:linear-gradient(180deg,#7b3755,#5a2440);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 -2px 5px rgba(0,0,0,.25),0 0 4px rgba(255,150,190,.45);
+  color:#ffd9e8;font-family:"Fredoka","Nunito",ui-rounded,sans-serif;font-weight:600;
+}
+.rc-time,.rc-ampm,.rc-icon{text-shadow:0 0 3cqw rgba(255,160,200,.95),0 0 1cqw rgba(255,220,235,.9)}
+.rc-time{font-size:28cqw;line-height:1;letter-spacing:.5cqw;font-variant-numeric:tabular-nums;white-space:nowrap}
+.rc-time .colon{animation:colonBlink 2s steps(1) infinite}
+@keyframes colonBlink{0%{opacity:1}50%{opacity:.15}}
+.rc-ampm{font-size:12.5cqw;line-height:1;align-self:flex-end;margin:0 0 15% 2cqw;letter-spacing:.5cqw}
+.rc-icon{font-size:15cqw;line-height:1;color:#ffe9a8;margin-right:2cqw}
+.rc-icon:empty,.rc-ampm:empty{display:none}
+.rc-icon:not(:empty) ~ .rc-ampm{display:none}
+@media(prefers-reduced-motion:reduce){.rc-time .colon{animation:none}}
+
+/* ---------- Seasonal decorations (seasons.js) ---------- */
+.season-room{position:absolute;inset:0;z-index:3;pointer-events:none;transition:filter .9s ease}
+body.lights-off .season-room{filter:brightness(.5) saturate(1.18) hue-rotate(-12deg)}
+.pumpkin{position:absolute;bottom:38.7%;filter:drop-shadow(0 2px 0 rgba(90,42,28,.25))}
+.pumpkin svg{display:block;width:100%;height:auto}
+.pumpkin .pk-face{fill:#5a2a1c;transition:fill .9s ease}
+body[data-sky="night"] .pumpkin .pk-face,body[data-sky="dusk"] .pumpkin .pk-face,body.lights-off .pumpkin .pk-face{fill:#ffcf5c}
+.pumpkin-glow{
+  position:absolute;bottom:38.9%;aspect-ratio:1;transform:translate(-50%,22%);border-radius:50%;opacity:0;
+  background:radial-gradient(circle,rgba(255,200,100,.8),rgba(255,150,70,.22) 42%,transparent 66%);
+  mix-blend-mode:screen;transition:opacity .9s ease;
+}
+body[data-sky="night"] .pumpkin-glow,body[data-sky="dusk"] .pumpkin-glow{opacity:.55}
+body.lights-off .pumpkin-glow{opacity:.85}
+/* the glow layer sits above the room's dimming, so lit pumpkins shine in cozy mode */
+.season-glow{position:absolute;inset:0;z-index:11;pointer-events:none}
+
+.outside .season-sky,.outside .season-glass{inset:0;pointer-events:none}
+.bat-track{position:absolute;left:0;width:100%;animation:batFly 16s linear infinite}
+@keyframes batFly{
+  0%{transform:translate(-25%,0)}25%{transform:translate(18%,-10%)}50%{transform:translate(52%,6%)}
+  75%{transform:translate(86%,-8%)}100%{transform:translate(125%,0)}
+}
+.bat{position:absolute;left:0;top:0;animation:batBob 1.2s ease-in-out infinite}
+.bat svg{display:block;width:100%;height:auto;overflow:visible}
+.bat .wing{transform-box:fill-box;animation:flap .28s ease-in-out infinite alternate}
+.bat .wing-l{transform-origin:100% 60%}
+.bat .wing-r{transform-origin:0% 60%}
+@keyframes flap{from{transform:scaleY(1) rotate(0)}to{transform:scaleY(.35) rotate(0)}}
+@keyframes batBob{0%,100%{translate:0 0}50%{translate:0 -14%}}
+.outside[data-time="day"] .bat{opacity:.85}
+
+.cling{position:absolute;opacity:.88;filter:drop-shadow(0 1px 1.5px rgba(80,50,90,.25))}
+.cling svg{display:block;width:100%;height:auto}
+.cling.flake{opacity:.92;filter:drop-shadow(0 0 2px rgba(140,160,220,.55))}
+.flurry{position:absolute;top:-8%;opacity:.85;animation:flurry 12s linear infinite}
+.flurry svg{display:block;width:100%;height:auto}
+@keyframes flurry{from{transform:translate(0,0) rotate(0)}to{transform:translate(28px,1300%) rotate(160deg)}}
+.outside[data-weather="rain"] .flurry,.outside[data-weather="storm"] .flurry,.outside[data-weather="drizzle"] .flurry{display:none}
+
+.float-heart{position:absolute;bottom:39%;opacity:0;animation:heartRise 4.5s ease-out forwards}
+.float-heart svg{display:block;width:100%;height:auto}
+@keyframes heartRise{
+  0%{opacity:0;transform:translate(-50%,0) scale(.6)}
+  15%{opacity:.95}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),-220%) scale(1.1)}
+}
+@media(prefers-reduced-motion:reduce){.bat-track{animation:none;transform:translate(40%,0)}.bat,.bat .wing{animation:none}}
+
+/* ---------- First load: blurred placeholder, then the room fades in ---------- */
+.scene::before{content:"";position:absolute;inset:-3%;z-index:-1;background:#f3b3c8 center/cover no-repeat;filter:blur(14px) saturate(1.05)}
+html:not(.room-ready) .lights,html:not(.room-ready) .monitor-week,html:not(.room-ready) .radio-clock,
+html:not(.room-ready) .season-room,html:not(.room-ready) .season-glow,html:not(.room-ready) .daylight,html:not(.room-ready) .outside{opacity:0}
+.lights,.monitor-week,.radio-clock,.season-room,.season-glow{transition:opacity .8s ease .2s,filter .9s ease}
+.outside{transition:opacity .8s ease}
+@media(prefers-reduced-motion:reduce){.scene-art,.lights,.monitor-week,.radio-clock,.season-room,.season-glow,.outside{transition:none}}
+
 /* ---------- Twinkling string lights ----------
    A warm glow sits exactly on each star light and pendant in the artwork
    and pulses at its own pace; little sparkle glints pop on the stars. */
@@ -331,7 +408,8 @@ body.lights-off .lights{filter:brightness(1.15) saturate(1.1)}
 .monitor-hit,.login-hit{-webkit-tap-highlight-color:transparent}
 
 /* lamp: "cozy mode" dims the room and lets the lamp, screen and window glow */
-.scene-art{transition:filter .9s ease}
+.scene-art{opacity:0;transition:filter .9s ease,opacity .8s ease}
+.room-ready .scene-art{opacity:1}
 body::before{transition:filter .9s ease}
 body.lights-off::before{filter:blur(10px) brightness(.42) saturate(1.1) hue-rotate(-12deg)}
 body.lights-off .scene-art{filter:brightness(.5) saturate(1.18) hue-rotate(-12deg)}

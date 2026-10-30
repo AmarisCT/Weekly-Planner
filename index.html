@@ -9,18 +9,85 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css?v=20261030-2">
+  <link rel="stylesheet" href="home.css?v=20261030-3">
 </head>
 <body>
   <main class="home">
     <div class="scene" id="scene">
-      <img id="sceneArt" class="scene-art" src="assets/ChatGPT%20Image%20Sep%2026,%202026,%2007_15_49%20AM.png?v=20260926-10" alt="A cozy pink kawaii desk room for The Weekly Planner">
-
-      <div class="window-clouds" aria-hidden="true">
-        <i class="cloud cloud-one"></i>
-        <i class="cloud cloud-two"></i>
-        <i class="cloud cloud-three"></i>
+      <!-- The live view outside: sits behind the artwork, seen through the window glass -->
+      <div class="outside" id="outside" data-time="night" data-weather="clear" aria-hidden="true">
+        <div class="sky"></div>
+        <div class="veil"></div>
+        <div class="stars"></div>
+        <div class="sun"></div>
+        <svg class="moon" viewBox="0 0 100 100"><circle class="moon-dark" cx="50" cy="50" r="46"/><path class="moon-lit" d="M50 4 A46 46 0 0 1 50 96 A20 46 0 0 0 50 4Z"/></svg>
+        <div class="sky-fx" id="skyFx"></div>
+        <div class="clouds" id="skyClouds"></div>
+        <div class="deck"></div>
+        <div class="horizon"></div>
+        <svg class="city" viewBox="386 430 631 142" preserveAspectRatio="none">
+          <g class="far">
+            <path d="M392 522 416 505 441 522Z M395 522h43v50h-43Z"/>
+            <path d="M470 476h6v14h-6Z M436 500 448 488h40l16 12Z M440 500h60v72h-60Z"/>
+            <path d="M545 464h6v16h-6Z M518 492 541 474 566 492Z M522 492h40v80h-40Z"/>
+            <path d="M858 515 870 500h32l13 15Z M862 515h50v57h-50Z"/>
+            <path d="M940 486h6v14h-6Z M913 498h52v74h-52Z M910 498h58v-5h-58Z"/>
+            <path d="M965 520 990 503 1017 520Z M968 520h49v52h-49Z"/>
+          </g>
+          <g class="far-win">
+            <rect x="405" y="535" width="4" height="6"/><rect x="421" y="535" width="4" height="6"/>
+            <rect x="452" y="512" width="5" height="7"/><rect x="467" y="512" width="5" height="7"/><rect x="481" y="532" width="5" height="7"/>
+            <rect x="532" y="505" width="4" height="6"/><rect x="546" y="505" width="4" height="6"/>
+            <rect x="875" y="526" width="5" height="7"/><rect x="890" y="526" width="5" height="7"/>
+            <rect x="926" y="510" width="5" height="7"/><rect x="946" y="530" width="5" height="7"/><rect x="985" y="535" width="5" height="7"/>
+          </g>
+          <g class="near">
+            <rect class="roof" x="577" y="481" width="8" height="12"/>
+            <rect class="wall" x="555" y="507" width="50" height="65"/>
+            <path class="roof" d="M553 507 562 490h35l13 17Z"/>
+            <rect class="wall" x="603" y="537" width="16" height="35"/>
+            <path class="roof" d="M601 537 606 530h11l4 7Z"/>
+            <rect class="wall" x="617" y="544" width="32" height="28"/>
+            <path class="roof" d="M615 544 619 539h27l4 5Z"/>
+            <rect class="wall" x="650" y="535" width="50" height="37"/>
+            <path class="roof" d="M644 535 660 513h34l15 22Z"/>
+            <rect class="wall" x="700" y="540" width="24" height="32"/>
+            <path class="roof" d="M698 540 703 534h18l5 6Z"/>
+            <rect class="roof" x="737" y="491" width="5" height="14"/>
+            <rect class="wall" x="722" y="512" width="36" height="60"/>
+            <path class="roof" d="M719 512 728 503h24l9 9Z"/>
+            <rect class="wall" x="758" y="531" width="32" height="41"/>
+            <path class="roof" d="M756 531 761 525h26l5 6Z"/>
+            <rect class="roof" x="820" y="456" width="6" height="16"/>
+            <rect class="wall" x="805" y="486" width="40" height="16"/>
+            <path class="roof" d="M797 486 810 470h28l13 16Z"/>
+            <rect class="wall" x="790" y="509" width="66" height="63"/>
+            <path class="roof" d="M784 509 796 500h54l11 9Z"/>
+          </g>
+          <g class="win">
+            <rect x="570" y="518" width="6" height="7"/><rect x="585" y="518" width="6" height="7"/>
+            <rect x="557" y="540" width="7" height="10"/><rect x="570" y="540" width="8" height="10"/><rect x="585" y="540" width="8" height="10"/>
+            <rect x="625" y="550" width="3" height="5"/><rect x="633" y="550" width="3" height="5"/>
+            <rect x="662" y="545" width="6" height="10"/><rect x="682" y="545" width="6" height="10"/>
+            <rect x="711" y="549" width="3" height="4"/>
+            <rect x="731" y="522" width="4" height="6"/><rect x="744" y="522" width="4" height="6"/><rect x="732" y="541" width="3" height="5"/><rect x="731" y="553" width="3" height="4"/>
+            <rect x="769" y="549" width="3" height="5"/><rect x="777" y="549" width="3" height="5"/>
+            <rect x="820" y="493" width="4" height="7"/><rect x="826" y="493" width="4" height="7"/>
+            <rect x="802" y="521" width="6" height="10"/><rect x="810" y="521" width="6" height="10"/><rect x="826" y="521" width="6" height="10"/><rect x="834" y="521" width="6" height="10"/>
+            <rect x="805" y="549" width="3" height="4"/><rect x="843" y="549" width="3" height="4"/>
+          </g>
+        </svg>
+        <div class="fog"></div>
+        <div class="rain far"></div>
+        <div class="rain"></div>
+        <div class="snow far"></div>
+        <div class="snow"></div>
+        <div class="flash"></div>
+        <div class="glass" id="skyGlass"></div>
       </div>
+
+      <img id="sceneArt" class="scene-art" src="assets/room-window-cutout.webp?v=20261030-3" alt="A cozy pink kawaii desk room for The Weekly Planner">
+      <div class="daylight" aria-hidden="true"></div>
 
       <div class="twinkles" aria-hidden="true">
         <i class="twinkle t1">✦</i><i class="twinkle t2">✦</i><i class="twinkle t3">✦</i><i class="twinkle t4">✦</i><i class="twinkle t5">✦</i><i class="twinkle t6">✦</i><i class="twinkle t7">✦</i><i class="twinkle t8">✦</i><i class="twinkle t9">✦</i><i class="twinkle t10">✦</i><i class="twinkle t11">✦</i><i class="twinkle t12">✦</i><i class="twinkle t13">✦</i><i class="twinkle t14">✦</i>
@@ -28,7 +95,6 @@
 
       <div class="room-dim" aria-hidden="true"></div>
       <div class="room-glow" aria-hidden="true"></div>
-      <div class="sky-fx" id="skyFx" aria-hidden="true"></div>
 
       <div class="room-things">
         <button class="thing" type="button" data-thing="window" data-tip="make a wish" aria-label="Look out the window" style="--x:24;--y:6;--w:35;--h:37"></button>
@@ -71,7 +137,8 @@
   <div class="room-tip" id="roomTip" aria-hidden="true"></div>
   <p class="sr-only" id="roomLive" aria-live="polite"></p>
   <a class="studio-mark" href="https://amarisct.github.io/Amaris/">an amaris ct project</a>
-  <script src="home.js?v=20261030-2"></script>
-  <script src="room.js?v=20261030-2"></script>
+  <script src="home.js?v=20261030-3"></script>
+  <script src="sky.js?v=20261030-3"></script>
+  <script src="room.js?v=20261030-3"></script>
 </body>
 </html>

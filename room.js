@@ -72,8 +72,15 @@
     }
   }
 
+  // Shooting stars only make sense on a fairly clear night.
+  function starryNight() {
+    const sky = window.skyInfo;
+    if (!sky) return true;
+    return sky.time === 'night' && ['clear', 'partly', 'cloudy'].includes(sky.kind);
+  }
+
   function shootingStar() {
-    if (!skyFx || reduceMotion) return;
+    if (!skyFx || reduceMotion || !starryNight()) return;
     const star = document.createElement('i');
     star.className = 'shooting-star';
     star.style.left = `${rand(8, 45)}%`;
@@ -239,9 +246,27 @@
       setLampLabel();
     },
     window() {
-      shootingStar();
-      setTimeout(shootingStar, 260);
-      bubble(42, 12, pick(['make a wish ✦', 'a shooting star!', 'the moon says hi ☾']));
+      const sky = window.skyInfo || { time: 'night', kind: 'clear' };
+      const where = sky.city ? ` in ${sky.city}` : '';
+      const temp = sky.temp ? ` · ${sky.temp}` : '';
+      if (starryNight()) {
+        shootingStar();
+        setTimeout(shootingStar, 260);
+        bubble(42, 12, pick(['make a wish ✦', 'a shooting star!', 'the moon says hi ☾']) + temp);
+        return;
+      }
+      const lines = {
+        storm: ['stormy out there ⚡ stay cozy', 'did you hear that thunder?'],
+        rain: [`it's raining${where} ☂`, 'listen to the rain…', 'perfect planning weather ☂'],
+        drizzle: [`a little drizzle${where}`, 'soft rain today ☂'],
+        snow: [`it's snowing${where}! ❄`, 'snow day ❄'],
+        fog: ['so foggy out', `misty${where} today`],
+        overcast: ['grey skies today', `cloudy${where}`],
+        cloudy: ['clouds rolling by ☁', `cloudy${where}`],
+        partly: [sky.time === 'day' ? 'sunny with a few clouds ☀' : 'a few clouds tonight', `nice out${where}`],
+        clear: [sky.time === 'day' ? `what a pretty day${where} ☀` : `clear skies${where} ✦`, 'not a cloud in the sky']
+      };
+      bubble(42, 12, pick(lines[sky.kind] || lines.clear) + temp);
     },
     mug() {
       bubble(35, 60, pick(['sip… ♡', 'still warm', 'refill?', 'latte break ☕']));

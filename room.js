@@ -89,6 +89,42 @@
     skyFx.appendChild(star);
   }
 
+  /* ---------- twinkling string lights ---------- */
+
+  const lightsEl = document.getElementById('roomLights');
+  const starLights = lightsEl
+    ? [...lightsEl.querySelectorAll('.light.big')].map((el) => ({
+      el,
+      x: parseFloat(el.style.getPropertyValue('--x')),
+      y: parseFloat(el.style.getPropertyValue('--y'))
+    }))
+    : [];
+
+  function glint(x, y, size = 1.5) {
+    if (!lightsEl || reduceMotion) return;
+    const g = document.createElement('i');
+    g.className = 'glint';
+    g.style.left = `${x}%`;
+    g.style.top = `${y}%`;
+    g.style.setProperty('--g', size.toFixed(2));
+    g.addEventListener('animationend', () => g.remove());
+    lightsEl.appendChild(g);
+  }
+
+  // Briefly turn a light up to full brightness.
+  function flareLight(x, y) {
+    const nearest = starLights.reduce((best, light) => {
+      const d = Math.hypot(light.x - x, light.y - y);
+      return !best || d < best.d ? { light, d } : best;
+    }, null);
+    if (!nearest || nearest.d > 4) return;
+    const { el } = nearest.light;
+    el.classList.remove('flare');
+    void el.offsetWidth;
+    el.classList.add('flare');
+    setTimeout(() => el.classList.remove('flare'), 1300);
+  }
+
   /* ---------- a tiny music box (original melody, Web Audio) ---------- */
 
   let audio = null;
@@ -282,6 +318,13 @@
       burst(49, 78, ['✦', '★', '✧'], 6, GOLDS, 8);
       blip();
     },
+    star(button) {
+      const x = Number(button.style.getPropertyValue('--x')) + Number(button.style.getPropertyValue('--w')) / 2;
+      const y = Number(button.style.getPropertyValue('--y')) + Number(button.style.getPropertyValue('--h')) / 2;
+      flareLight(x, y);
+      for (let i = 0; i < 5; i += 1) setTimeout(() => glint(x + rand(-2.4, 2.4), y + rand(-3.5, 3), rand(1.3, 2.2)), i * 110);
+      bubble(x, y - 3, pick(['✦ twinkle twinkle', 'so sparkly!', '*glows happily*', 'make a wish ✦']));
+    },
     bunny(button) {
       const x = Number(button.style.getPropertyValue('--x')) + Number(button.style.getPropertyValue('--w')) / 2;
       const y = Number(button.style.getPropertyValue('--y'));
@@ -350,6 +393,12 @@
       z.addEventListener('animationend', () => z.remove());
       fx.appendChild(z);
     }, 2400);
+
+    setInterval(() => {
+      if (document.hidden || !starLights.length) return;
+      const star = pick(starLights);
+      glint(star.x + rand(-1.4, 1.4), star.y + rand(-2.4, 1.6), rand(1.1, 1.9));
+    }, 700);
 
     const queueStar = () => setTimeout(() => {
       if (!document.hidden) shootingStar();

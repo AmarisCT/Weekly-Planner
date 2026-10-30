@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css?v=20261030-3">
+  <link rel="stylesheet" href="home.css?v=20261030-4">
 </head>
 <body>
   <main class="home">
@@ -19,6 +19,19 @@
         <div class="sky"></div>
         <div class="veil"></div>
         <div class="stars"></div>
+        <div class="sky-sparkles">
+          <i class="sparkle" style="left:50.7%;top:6.4%;--s:3.2;--d:3.2s;--delay:-1.2s"></i>
+          <i class="sparkle" style="left:67.8%;top:16.8%;--s:2.4;--d:3.3s;--delay:-1.2s"></i>
+          <i class="sparkle" style="left:80.0%;top:25.2%;--s:3.0;--d:3.5s;--delay:-2.5s"></i>
+          <i class="sparkle" style="left:63.1%;top:40.3%;--s:2.2;--d:1.8s;--delay:-0.6s"></i>
+          <i class="sparkle" style="left:34.2%;top:39.0%;--s:2.8;--d:3.4s;--delay:-1.4s"></i>
+          <i class="sparkle" style="left:23.0%;top:29.9%;--s:2.2;--d:3.6s;--delay:-1.2s"></i>
+          <i class="sparkle" style="left:17.1%;top:14.9%;--s:2.0;--d:1.9s;--delay:-1.9s"></i>
+          <i class="sparkle" style="left:51.7%;top:52.9%;--s:2.0;--d:3.2s;--delay:-0.8s"></i>
+          <i class="sparkle" style="left:41.4%;top:45.0%;--s:2.6;--d:2.0s;--delay:-1.0s"></i>
+          <i class="sparkle" style="left:90.0%;top:18.6%;--s:2.2;--d:3.5s;--delay:-2.3s"></i>
+          <i class="sparkle" style="left:8.0%;top:34.0%;--s:2.0;--d:2.0s;--delay:-0.7s"></i>
+        </div>
         <div class="sun"></div>
         <svg class="moon" viewBox="0 0 100 100"><circle class="moon-dark" cx="50" cy="50" r="46"/><path class="moon-lit" d="M50 4 A46 46 0 0 1 50 96 A20 46 0 0 0 50 4Z"/></svg>
         <div class="sky-fx" id="skyFx"></div>
@@ -89,8 +102,30 @@
       <img id="sceneArt" class="scene-art" src="assets/room-window-cutout.webp?v=20261030-3" alt="A cozy pink kawaii desk room for The Weekly Planner">
       <div class="daylight" aria-hidden="true"></div>
 
-      <div class="twinkles" aria-hidden="true">
-        <i class="twinkle t1">✦</i><i class="twinkle t2">✦</i><i class="twinkle t3">✦</i><i class="twinkle t4">✦</i><i class="twinkle t5">✦</i><i class="twinkle t6">✦</i><i class="twinkle t7">✦</i><i class="twinkle t8">✦</i><i class="twinkle t9">✦</i><i class="twinkle t10">✦</i><i class="twinkle t11">✦</i><i class="twinkle t12">✦</i><i class="twinkle t13">✦</i><i class="twinkle t14">✦</i>
+      <!-- the string lights in the artwork twinkle -->
+      <div class="lights" id="roomLights" aria-hidden="true">
+        <i class="light big" style="--x:24.31;--y:10.52;--s:6.6;--d:2.9s;--delay:-1.6s"></i>
+        <i class="light big" style="--x:28.29;--y:15.52;--s:6.6;--d:3.7s;--delay:-1.7s"></i>
+        <i class="light big" style="--x:35.8;--y:10.89;--s:6.6;--d:3.0s;--delay:-1.8s"></i>
+        <i class="light big" style="--x:55.77;--y:5.63;--s:6.6;--d:2.5s;--delay:-1.3s"></i>
+        <i class="light big" style="--x:59.93;--y:12.43;--s:6.6;--d:3.2s;--delay:-2.5s"></i>
+        <i class="light big" style="--x:65.6;--y:6.4;--s:6.6;--d:2.4s;--delay:-0.7s"></i>
+        <i class="light" style="--x:24.49;--y:15.99;--s:2.4;--d:2.3s;--delay:-1.9s"></i>
+        <i class="light" style="--x:28.5;--y:20.2;--s:2.4;--d:3.3s;--delay:-0.1s"></i>
+        <i class="light" style="--x:32.51;--y:15.2;--s:2.4;--d:3.8s;--delay:-3.6s"></i>
+        <i class="light" style="--x:38.6;--y:8.0;--s:2.4;--d:3.2s;--delay:-2.0s"></i>
+        <i class="light" style="--x:39.8;--y:6.1;--s:2.4;--d:2.5s;--delay:-0.0s"></i>
+        <i class="light" style="--x:41.1;--y:3.0;--s:2.4;--d:3.0s;--delay:-0.2s"></i>
+        <i class="light" style="--x:26.8;--y:11.96;--s:2.4;--d:2.5s;--delay:-0.6s"></i>
+        <i class="light" style="--x:30.15;--y:11.96;--s:2.4;--d:2.2s;--delay:-1.0s"></i>
+        <i class="light" style="--x:53.7;--y:3.0;--s:2.4;--d:2.9s;--delay:-2.4s"></i>
+        <i class="light" style="--x:55.8;--y:10.63;--s:2.4;--d:3.0s;--delay:-1.9s"></i>
+        <i class="light" style="--x:57.3;--y:8.95;--s:2.4;--d:3.0s;--delay:-2.0s"></i>
+        <i class="light" style="--x:59.75;--y:17.0;--s:2.4;--d:2.9s;--delay:-0.8s"></i>
+        <i class="light" style="--x:62.3;--y:14.9;--s:2.4;--d:3.8s;--delay:-3.8s"></i>
+        <i class="light" style="--x:28.3;--y:6.6;--s:2.4;--d:3.5s;--delay:-2.5s"></i>
+        <i class="light pink" style="--x:32.2;--y:6.9;--s:2.4;--d:2.7s;--delay:-0.6s"></i>
+        <i class="light pink" style="--x:24.3;--y:19.7;--s:2.4;--d:2.7s;--delay:-0.2s"></i>
       </div>
 
       <div class="room-dim" aria-hidden="true"></div>
@@ -98,6 +133,11 @@
 
       <div class="room-things">
         <button class="thing" type="button" data-thing="window" data-tip="make a wish" aria-label="Look out the window" style="--x:24;--y:6;--w:35;--h:37"></button>
+        <button class="thing" type="button" data-thing="star" data-tip="make it sparkle" aria-label="Make the star light sparkle" style="--x:22.51;--y:7.32;--w:3.6;--h:6.4"></button>
+        <button class="thing" type="button" data-thing="star" data-tip="make it sparkle" aria-label="Make the star light sparkle" style="--x:26.49;--y:12.32;--w:3.6;--h:6.4"></button>
+        <button class="thing" type="button" data-thing="star" data-tip="make it sparkle" aria-label="Make the star light sparkle" style="--x:34.00;--y:7.69;--w:3.6;--h:6.4"></button>
+        <button class="thing" type="button" data-thing="star" data-tip="make it sparkle" aria-label="Make the star light sparkle" style="--x:53.97;--y:2.43;--w:3.6;--h:6.4"></button>
+        <button class="thing" type="button" data-thing="star" data-tip="make it sparkle" aria-label="Make the star light sparkle" style="--x:58.13;--y:9.23;--w:3.6;--h:6.4"></button>
         <button class="thing" type="button" data-thing="cat" data-tip="pet the cat" aria-label="Pet the cat" style="--x:5;--y:49;--w:10.5;--h:11"></button>
         <button class="thing" type="button" data-thing="radio" aria-label="Turn on the radio" style="--x:1;--y:60;--w:16.5;--h:17"></button>
         <button class="thing" type="button" data-thing="tulips" data-tip="smell the tulips" aria-label="Smell the tulips" style="--x:18;--y:43;--w:12;--h:36"></button>
@@ -139,6 +179,6 @@
   <a class="studio-mark" href="https://amarisct.github.io/Amaris/">an amaris ct project</a>
   <script src="home.js?v=20261030-3"></script>
   <script src="sky.js?v=20261030-3"></script>
-  <script src="room.js?v=20261030-3"></script>
+  <script src="room.js?v=20261030-4"></script>
 </body>
 </html>

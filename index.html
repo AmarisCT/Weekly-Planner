@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css?v=20261030-1">
+  <link rel="stylesheet" href="home.css?v=20261030-2">
 </head>
 <body>
   <main class="home">
@@ -26,8 +26,30 @@
         <i class="twinkle t1">✦</i><i class="twinkle t2">✦</i><i class="twinkle t3">✦</i><i class="twinkle t4">✦</i><i class="twinkle t5">✦</i><i class="twinkle t6">✦</i><i class="twinkle t7">✦</i><i class="twinkle t8">✦</i><i class="twinkle t9">✦</i><i class="twinkle t10">✦</i><i class="twinkle t11">✦</i><i class="twinkle t12">✦</i><i class="twinkle t13">✦</i><i class="twinkle t14">✦</i>
       </div>
 
-      <a class="monitor-hit" href="planner.html" aria-label="Open the Weekly Planner"></a>
-      <a class="login-hit" id="homeLogin" href="login.html" aria-label="Log in"></a>
+      <div class="room-dim" aria-hidden="true"></div>
+      <div class="room-glow" aria-hidden="true"></div>
+      <div class="sky-fx" id="skyFx" aria-hidden="true"></div>
+
+      <div class="room-things">
+        <button class="thing" type="button" data-thing="window" data-tip="make a wish" aria-label="Look out the window" style="--x:24;--y:6;--w:35;--h:37"></button>
+        <button class="thing" type="button" data-thing="cat" data-tip="pet the cat" aria-label="Pet the cat" style="--x:5;--y:49;--w:10.5;--h:11"></button>
+        <button class="thing" type="button" data-thing="radio" aria-label="Turn on the radio" style="--x:1;--y:60;--w:16.5;--h:17"></button>
+        <button class="thing" type="button" data-thing="tulips" data-tip="smell the tulips" aria-label="Smell the tulips" style="--x:18;--y:43;--w:12;--h:36"></button>
+        <button class="thing" type="button" data-thing="mug" data-tip="take a sip" aria-label="Take a sip of coffee" style="--x:30;--y:61;--w:10;--h:20"></button>
+        <button class="thing" type="button" data-thing="console" data-tip="press start" aria-label="Play the game console" style="--x:40;--y:72;--w:18.5;--h:14"></button>
+        <button class="thing" type="button" data-thing="bunny" data-tip="say hi" aria-label="Say hi to the bunny" style="--x:54;--y:52;--w:4.3;--h:10"></button>
+        <button class="thing" type="button" data-thing="bunny" data-tip="say hi" aria-label="Say hi to the little bunny" style="--x:44;--y:65;--w:5.5;--h:6.5"></button>
+        <button class="thing" type="button" data-thing="bunny" data-tip="say hi" aria-label="Say hi to the shelf bunny" style="--x:91;--y:9;--w:7;--h:13"></button>
+        <button class="thing" type="button" data-thing="lamp" aria-label="Turn off the lights" style="--x:95;--y:48;--w:5;--h:16"></button>
+        <button class="thing" type="button" data-thing="headphones" aria-label="Turn on the music" style="--x:86;--y:70;--w:14;--h:26"></button>
+        <a class="thing" data-link="journal" href="login.html?mode=signup" data-tip="make your own planner" aria-label="Sign up for your own planner" style="--x:2.5;--y:77;--w:18.5;--h:16"></a>
+        <a class="thing" href="planner.html" data-tip="start planning" aria-label="Open the Weekly Planner from the keyboard" style="--x:58;--y:76;--w:28;--h:20"></a>
+      </div>
+
+      <a class="monitor-hit" href="planner.html" data-tip="open your planner ♡" aria-label="Open the Weekly Planner"></a>
+      <a class="login-hit" id="homeLogin" href="login.html" data-tip="log in" aria-label="Log in"></a>
+
+      <div class="room-fx" id="roomFx" aria-hidden="true"></div>
 
       <div class="account-wrap" id="homeAccountWrap" hidden>
         <button class="account-button" id="homeAccountButton" type="button" aria-expanded="false">
@@ -46,7 +68,10 @@
     <a class="dock-button" id="dockLogin" href="login.html">LOG IN</a>
   </nav>
   <p class="swipe-hint" aria-hidden="true">← swipe to look around →</p>
+  <div class="room-tip" id="roomTip" aria-hidden="true"></div>
+  <p class="sr-only" id="roomLive" aria-live="polite"></p>
   <a class="studio-mark" href="https://amarisct.github.io/Amaris/">an amaris ct project</a>
-  <script src="home.js?v=20261030-1"></script>
+  <script src="home.js?v=20261030-2"></script>
+  <script src="room.js?v=20261030-2"></script>
 </body>
 </html>

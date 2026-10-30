@@ -3,15 +3,24 @@ html,body{margin:0;min-height:100%;font-family:"Nunito",sans-serif}
 body{background:#efa0bd;overflow:hidden;position:relative}
 body::before{content:"";position:fixed;inset:-18px;z-index:0;pointer-events:none;background:#efa0bd center/cover no-repeat;filter:blur(10px) saturate(1.03);transform:scale(1.035)}
 body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:rgba(255,214,229,.06)}
-.home{position:relative;z-index:1;width:100vw;height:100vh;display:grid;place-items:center;background:transparent}
+:root{--vh:100vh}
+@supports (height:100dvh){:root{--vh:100dvh}}
+/* The room fills the whole screen like a wallpaper ("cover"). Extra height is
+   trimmed from the bottom of the desk first (up to 16%), so the top of the room
+   (sign + login) stays in view; any more is trimmed evenly. */
+.home{position:relative;z-index:1;width:100vw;height:var(--vh);overflow:hidden;background:transparent}
 .scene{
-  position:relative;
-  width:min(100vw,calc(100vh * 1.777895));
+  --sw:max(100vw,calc(var(--vh) * 1.777895));
+  position:absolute;
+  width:var(--sw);
+  /* on squarer screens keep the whole computer in view: trim at most 5% from the right */
+  left:calc(-1 * (var(--sw) - 100vw - min((var(--sw) - 100vw) / 2,0.05 * var(--sw))));
+  top:calc(-1 * max(0px,(0.84 * max(var(--vh),calc(100vw / 1.777895)) - var(--vh)) / 2));
   aspect-ratio:1672/941;
   overflow:hidden;
   background:transparent;
 }
-.scene-art{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;display:block;user-select:none;pointer-events:none;-webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.35) 1.5%,#000 4.5%,#000 95.5%,rgba(0,0,0,.35) 98.5%,transparent 100%);mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.35) 1.5%,#000 4.5%,#000 95.5%,rgba(0,0,0,.35) 98.5%,transparent 100%)}
+.scene-art{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;display:block;user-select:none;pointer-events:none}
 .monitor-hit{
   position:absolute;left:58.3%;top:30.2%;width:35.6%;height:42.8%;
   z-index:20;border-radius:2.2%;background:transparent;
@@ -398,6 +407,20 @@ body.lights-off .lights{filter:brightness(1.15) saturate(1.1)}
   50%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(12deg)}
 }
 
+/* When the screen shape trims the drawn LOGIN button, a matching button sits
+   in the visible top-right corner instead (home.js sets the corner offsets). */
+.corner-login{display:none}
+body.login-offscreen .login-hit{display:none}
+body.login-offscreen .account-wrap{right:var(--corner-right,14px);top:var(--corner-top,14px)}
+body.login-offscreen .account-button{min-width:0;height:40px;padding:0 14px;font-size:13px}
+body.login-offscreen .corner-login:not([hidden]){
+  display:flex;align-items:center;gap:8px;position:absolute;z-index:30;right:var(--corner-right,14px);top:var(--corner-top,14px);
+  height:40px;padding:0 16px;border:2px solid #ca3f67;background:#fddee3;color:#ca3f67;text-decoration:none;
+  box-shadow:3px 3px 0 rgba(202,63,103,.75);font:600 13px/1 "Fredoka","Nunito",ui-rounded,sans-serif;letter-spacing:.1em;
+}
+body.login-offscreen .corner-login:hover{background:#fff4f7}
+.corner-login:focus-visible{outline:3px solid #ca3f67;outline-offset:3px}
+
 /* ---------- Interactive room ---------- */
 .thing{
   position:absolute;z-index:18;display:block;padding:0;border:0;border-radius:0;
@@ -490,7 +513,7 @@ body.lights-off .room-dim,body.lights-off .room-glow{opacity:1}
     -webkit-overflow-scrolling:touch;scrollbar-width:none;
   }
   .home::-webkit-scrollbar{display:none}
-  .scene{width:auto;height:100vh;height:100svh;container-type:normal}
+  .scene{position:relative;left:auto;top:auto;width:auto;height:100vh;height:100svh;container-type:normal}
   .scene-art{-webkit-mask-image:none;mask-image:none}
   .login-hit{display:none}
   .account-wrap{position:fixed;right:12px;top:12px}

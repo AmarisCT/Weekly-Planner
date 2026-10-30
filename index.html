@@ -8,8 +8,8 @@
   <meta name="description" content="A cozy digital space for organizing the week. An amaris ct project.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css?v=20261019-1">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css?v=20261030-1">
 </head>
 <body>
   <main class="home">
@@ -31,7 +31,7 @@
 
       <div class="account-wrap" id="homeAccountWrap" hidden>
         <button class="account-button" id="homeAccountButton" type="button" aria-expanded="false">
-          <span id="homeAccountName">ACCOUNT</span><span>▼</span>
+          <span id="homeAccountName">ACCOUNT</span><span aria-hidden="true">▾</span>
         </button>
         <div class="account-menu" id="homeAccountMenu" hidden>
           <a href="planner.html">OPEN PLANNER</a>
@@ -41,7 +41,12 @@
       </div>
     </div>
   </main>
+  <nav class="mobile-dock" aria-label="Quick links">
+    <a class="dock-button primary" href="planner.html">OPEN PLANNER</a>
+    <a class="dock-button" id="dockLogin" href="login.html">LOG IN</a>
+  </nav>
+  <p class="swipe-hint" aria-hidden="true">← swipe to look around →</p>
   <a class="studio-mark" href="https://amarisct.github.io/Amaris/">an amaris ct project</a>
-  <script src="home.js?v=20260926-10"></script>
+  <script src="home.js?v=20261030-1"></script>
 </body>
 </html>

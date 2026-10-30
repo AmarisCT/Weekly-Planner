@@ -3,6 +3,7 @@ const signupTab = document.getElementById('signupTab');
 const loginForm = document.getElementById('loginForm');
 const signupForm = document.getElementById('signupForm');
 const authTitle = document.getElementById('authTitle');
+const authSubtitle = document.getElementById('authSubtitle');
 const message = document.getElementById('message');
 
 function showMode(mode) {
@@ -12,11 +13,18 @@ function showMode(mode) {
   loginTab.classList.toggle('active', login);
   signupTab.classList.toggle('active', !login);
   authTitle.textContent = login ? 'LOGIN' : 'SIGN UP';
+  if (authSubtitle) {
+    authSubtitle.textContent = login
+      ? 'welcome back to your little room'
+      : 'make a planner that is all yours';
+  }
   message.textContent = '';
 }
 
 loginTab.addEventListener('click', () => showMode('login'));
 signupTab.addEventListener('click', () => showMode('signup'));
+
+if (new URLSearchParams(window.location.search).get('mode') === 'signup') showMode('signup');
 
 function getUsers() {
   try {

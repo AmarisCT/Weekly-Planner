@@ -3,76 +3,134 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f4c9d1" />
+  <meta name="theme-color" content="#ffe1e8" />
   <title>Login · The Weekly Planner · amaris ct</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --deep-rose:#8f565d;
-      --stripe-a:#f7d9df;
-      --stripe-b:#efc3cc;
-      --paper:rgba(255,251,249,.96);
-      --shadow:rgba(116,67,75,.14);
+      --ink:#c93d66;
+      --ink-strong:#8f2a4a;
+      --ink-soft:#d97a98;
+      --paper:#fffafa;
+      --tint:#fdeef2;
+      --drop:rgba(201,61,102,.82);
+      --font-display:"Fredoka","Nunito",ui-rounded,system-ui,sans-serif;
+      --font-body:"Nunito",ui-rounded,system-ui,sans-serif;
     }
     *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%}
     body{
-      margin:0;min-height:100vh;display:grid;place-items:center;
-      color:var(--deep-rose);
-      font-family:"Libre Baskerville",Georgia,serif;
-      background-color:var(--stripe-a);
-      background-image:repeating-linear-gradient(
-        90deg,
-        var(--stripe-a) 0 34px,
-        var(--stripe-b) 34px 68px
-      );
-      padding:24px;
+      min-height:100vh;min-height:100dvh;display:grid;place-items:center;
+      padding:28px 18px 72px;position:relative;
+      color:var(--ink-strong);font-family:var(--font-body);
+      background:#f7b3c8;-webkit-font-smoothing:antialiased;
     }
+    body::before{
+      content:"";position:fixed;inset:-24px;z-index:-2;
+      background:url("assets/ChatGPT%20Image%20Sep%2026,%202026,%2007_15_49%20AM.png") 70% center/cover no-repeat;
+      filter:blur(9px) saturate(1.05);
+    }
+    body::after{
+      content:"";position:fixed;inset:0;z-index:-1;
+      background:rgba(255,226,235,.38);
+    }
+    button,input{font:inherit;color:inherit}
+
     .auth-shell{
-      width:min(100%,520px);
-      background:var(--paper);
-      border:1.5px solid var(--deep-rose);
-      box-shadow:0 8px 24px var(--shadow);
-      padding:28px;
+      position:relative;width:min(100%,440px);
+      background:var(--paper);border:2px solid var(--ink);
+      box-shadow:6px 6px 0 var(--drop);
+      padding:34px 30px 26px;
     }
-    .brand{text-align:center;margin-bottom:22px}
-    .eyebrow{margin:0 0 5px;font-size:.67rem;letter-spacing:.28em}
-    h1{margin:0;font-size:2.7rem;font-weight:400;letter-spacing:.05em}
-    .tabs{display:grid;grid-template-columns:1fr 1fr;margin:22px 0 20px}
+    /* washi tape */
+    .auth-shell::before{
+      content:"";position:absolute;top:-15px;left:50%;width:120px;height:30px;
+      transform:translateX(-50%) rotate(-3deg);pointer-events:none;
+      background:
+        repeating-linear-gradient(-45deg,transparent 0 7px,rgba(255,250,250,.55) 7px 14px),
+        rgba(201,61,102,.34);
+    }
+
+    .brand{text-align:center}
+    .eyebrow{
+      margin:0 0 6px;font-family:var(--font-display);font-weight:600;
+      font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-soft)
+    }
+    .eyebrow::before,.eyebrow::after{content:"✦";margin:0 .6em;letter-spacing:0}
+    h1{
+      margin:0;font-family:var(--font-display);font-weight:700;
+      font-size:2.9rem;line-height:1;letter-spacing:.05em;color:var(--ink);
+      text-shadow:3px 3px 0 #fbd5df
+    }
+    .subtitle{margin:10px 0 0;font-weight:700;font-size:.95rem;color:var(--ink-soft)}
+
+    .tabs{display:grid;grid-template-columns:1fr 1fr;margin:24px 0 22px;border:2px solid var(--ink)}
     .tab{
-      height:44px;border:1px solid var(--deep-rose);border-radius:0;
-      background:#fffaf8;color:var(--deep-rose);cursor:pointer;
-      letter-spacing:.08em;font-size:.75rem
+      height:44px;border:0;border-radius:0;background:var(--paper);color:var(--ink);cursor:pointer;
+      font-family:var(--font-display);font-weight:600;letter-spacing:.12em;font-size:.86rem
     }
-    .tab.active{background:var(--deep-rose);color:#fff}
+    .tab + .tab{border-left:2px solid var(--ink)}
+    .tab:hover{background:var(--tint)}
+    .tab.active{background:var(--ink);color:var(--paper)}
+
     form{display:grid;gap:14px}
-    label{display:grid;gap:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+    label{
+      display:grid;gap:6px;font-family:var(--font-display);font-weight:600;
+      font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)
+    }
     input{
-      height:44px;border:1px solid var(--deep-rose);border-radius:0;
-      background:#fff;color:var(--deep-rose);padding:0 12px;font:inherit
+      height:46px;border:2px solid var(--ink);border-radius:0;
+      background:var(--tint);color:var(--ink-strong);padding:0 12px;
+      font-family:var(--font-body);font-weight:700;font-size:1rem;letter-spacing:0;text-transform:none
     }
+    input:focus{background:var(--paper)}
     .submit{
-      height:46px;border:1px solid var(--deep-rose);border-radius:0;
-      background:var(--deep-rose);color:white;cursor:pointer;
-      letter-spacing:.08em;margin-top:4px
+      height:48px;margin-top:6px;border:2px solid var(--ink);border-radius:0;
+      background:var(--ink);color:var(--paper);cursor:pointer;
+      box-shadow:3px 3px 0 var(--drop);
+      font-family:var(--font-display);font-weight:600;letter-spacing:.14em;font-size:.95rem;
+      transition:transform 120ms ease,box-shadow 120ms ease,background 120ms ease
     }
-    .message{min-height:20px;margin:12px 0 0;font-size:.8rem;text-align:center}
+    .submit:hover{background:var(--ink-strong);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--drop)}
+    .submit:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--drop)}
+
+    .message{min-height:22px;margin:14px 0 0;font-weight:700;font-size:.9rem;text-align:center;color:var(--ink)}
+    .message:empty{min-height:0;margin:0}
     .back{
-      display:block;text-align:center;margin-top:18px;color:var(--deep-rose);
-      font-size:.78rem;text-decoration:none
+      display:block;width:max-content;margin:18px auto 0;padding:6px 8px;
+      font-family:var(--font-display);font-weight:600;font-size:.82rem;letter-spacing:.12em;
+      color:var(--ink);text-decoration:none
     }
+    .back:hover{text-decoration:underline;text-underline-offset:4px}
     .hidden{display:none}
+
+    .tab:focus-visible,input:focus-visible,.submit:focus-visible,.back:focus-visible,.studio-mark:focus-visible{
+      outline:3px solid var(--ink);outline-offset:3px
+    }
+
+    /* amaris ct studio mark: small silver link back to the parent studio */
+    .studio-mark{position:fixed;left:14px;bottom:14px;padding:7px 12px 6px;font:400 11px/1 Arial,sans-serif;letter-spacing:2px;text-decoration:none;color:#2b2b2b;background:linear-gradient(110deg,#a8a8a6,#ededeb 70%,#c9c9c7);border:1px solid #9d9d9b;box-shadow:0 2px 8px rgba(60,60,60,.22);text-shadow:0 1px 0 rgba(255,255,255,.6)}
+    .studio-mark:hover{background:linear-gradient(110deg,#b8b8b6,#f6f6f4 70%,#d4d4d2);color:#000}
+
+    @media(max-width:480px){
+      .auth-shell{padding:30px 20px 22px}
+      h1{font-size:2.4rem}
+      .studio-mark{left:50%;transform:translateX(-50%);bottom:12px;font-size:10px;letter-spacing:1.5px}
+    }
+    @media(prefers-reduced-motion:reduce){.submit{transition:none}}
   </style>
 </head>
 <body>
   <main class="auth-shell">
     <div class="brand">
-      <p class="eyebrow">WEEKLY PLANNER</p>
+      <p class="eyebrow">weekly planner</p>
       <h1 id="authTitle">LOGIN</h1>
+      <p class="subtitle" id="authSubtitle">welcome back to your little room</p>
     </div>
 
-    <div class="tabs">
+    <div class="tabs" role="group" aria-label="Login or sign up">
       <button class="tab active" id="loginTab" type="button">LOGIN</button>
       <button class="tab" id="signupTab" type="button">SIGN UP</button>
     </div>
@@ -106,9 +164,11 @@
     </form>
 
     <p class="message" id="message" aria-live="polite"></p>
-    <a class="back" href="index.html">← BACK HOME</a>
+    <a class="back" href="index.html">← BACK TO MY ROOM</a>
   </main>
 
-  <script src="auth.js"></script>
+  <a class="studio-mark" href="https://amarisct.github.io/Amaris/">an amaris ct project</a>
+
+  <script src="auth.js?v=20261030-1"></script>
 </body>
 </html>

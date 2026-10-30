@@ -44,62 +44,54 @@ const months = [
 
 const defaultTheme = {
   backgroundStyle: 'stripes',
-  pageColor: '#f7d9df',
-  stripeColor: '#efc3cc',
-  paperColor: '#fffaf8',
-  accentColor: '#8f565d',
+  pageColor: '#ffe1e8',
+  stripeColor: '#fdcbd7',
+  paperColor: '#fffafa',
+  accentColor: '#c93d66',
   backgroundImage: '',
   backgroundSize: 'cover',
   backgroundPosition: 'center center',
   patternScale: 180
 };
 
+// Colors from the first version of the planner. A saved theme that still
+// matches them exactly is upgraded to the new default look.
+const legacyDefaultColors = {
+  pageColor: '#f7d9df',
+  stripeColor: '#efc3cc',
+  paperColor: '#fffaf8',
+  accentColor: '#8f565d'
+};
+
 const presets = {
-  pink: {
-    backgroundStyle: 'stripes',
-    pageColor: '#f7d9df',
-    stripeColor: '#efc3cc',
-    paperColor: '#fffaf8',
-    accentColor: '#8f565d',
-    backgroundImage: '',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    patternScale: 180
-  },
+  pink: { ...defaultTheme },
   cream: {
-    backgroundStyle: 'stripes',
-    pageColor: '#f7f0df',
-    stripeColor: '#eadfbe',
-    paperColor: '#fffdf6',
-    accentColor: '#7a6654',
-    backgroundImage: '',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    patternScale: 180
+    ...defaultTheme,
+    pageColor: '#fbf3e2',
+    stripeColor: '#f1e1c2',
+    paperColor: '#fffdf7',
+    accentColor: '#a0673f'
   },
   lavender: {
-    backgroundStyle: 'stripes',
-    pageColor: '#eee7f7',
-    stripeColor: '#ddd0ee',
-    paperColor: '#fffaff',
-    accentColor: '#6f587f',
-    backgroundImage: '',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    patternScale: 180
+    ...defaultTheme,
+    pageColor: '#f0e8fd',
+    stripeColor: '#e0d0f8',
+    paperColor: '#fdfaff',
+    accentColor: '#7d4fc0'
   },
   dark: {
+    ...defaultTheme,
     backgroundStyle: 'solid',
-    pageColor: '#2f2930',
-    stripeColor: '#2f2930',
-    paperColor: '#f4edf3',
-    accentColor: '#6a4459',
-    backgroundImage: '',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-    patternScale: 180
+    pageColor: '#2c2230',
+    stripeColor: '#3a2d40',
+    paperColor: '#fff4f8',
+    accentColor: '#c2386c'
   }
 };
+
+const shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const dayCards = document.querySelectorAll('.day-box[data-day]');
+const plannerEyebrow = document.querySelector('#plannerEyebrow');
 
 function getLocalDateString(date = new Date()) {
   const year = date.getFullYear();
@@ -137,6 +129,7 @@ function updateLoginButton() {
     loginButton.classList.remove('is-hidden');
     accountWrap?.classList.add('is-hidden');
     customizeButton.classList.add('is-hidden');
+    if (plannerEyebrow) plannerEyebrow.textContent = 'my week at a glance';
     return;
   }
 
@@ -147,16 +140,55 @@ function updateLoginButton() {
   accountWrap?.classList.remove('is-hidden');
   if (accountName) accountName.textContent = name.toUpperCase();
   customizeButton.classList.add('is-hidden');
+
+  const firstName = (users[currentUser]?.name || '').trim().split(/\s+/)[0];
+  if (plannerEyebrow) {
+    plannerEyebrow.textContent = firstName ? `${firstName}'s week at a glance` : 'my week at a glance';
+  }
+}
+
+function getMondayOf(dateString) {
+  const date = dateString ? new Date(`${dateString}T12:00:00`) : new Date();
+  if (Number.isNaN(date.getTime())) return getMondayOf('');
+  const monday = new Date(date);
+  monday.setDate(date.getDate() - ((date.getDay() + 6) % 7));
+  return monday;
+}
+
+function updateDayDates() {
+  const monday = getMondayOf(weekInput.value);
+  const todayString = getLocalDateString(new Date());
+
+  dayCards.forEach((card) => {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + Number(card.dataset.day));
+
+    const num = card.querySelector('.day-num');
+    const label = card.querySelector('.day-date');
+    if (num) num.textContent = String(date.getDate());
+    if (label) label.textContent = shortMonths[date.getMonth()];
+    card.classList.toggle('is-today', getLocalDateString(date) === todayString);
+  });
 }
 
 function getSavedTheme() {
   if (!isLoggedIn()) return { ...defaultTheme };
 
   try {
-    return {
-      ...defaultTheme,
-      ...(JSON.parse(localStorage.getItem(userKey('theme'))) || {})
-    };
+    const saved = JSON.parse(localStorage.getItem(userKey('theme'))) || {};
+    const isLegacyDefault = Object.entries(legacyDefaultColors)
+      .every(([key, value]) => String(saved[key] || '').toLowerCase() === value);
+
+    if (isLegacyDefault) {
+      Object.assign(saved, {
+        pageColor: defaultTheme.pageColor,
+        stripeColor: defaultTheme.stripeColor,
+        paperColor: defaultTheme.paperColor,
+        accentColor: defaultTheme.accentColor
+      });
+    }
+
+    return { ...defaultTheme, ...saved };
   } catch {
     return { ...defaultTheme };
   }
@@ -281,6 +313,8 @@ weekInput.addEventListener('change', () => {
     monthSelect.value = String(selectedDate.getMonth());
     localStorage.setItem(userKey('month'), monthSelect.value);
   }
+
+  updateDayDates();
 });
 
 monthSelect.addEventListener('change', () => {
@@ -315,7 +349,8 @@ logoutButton?.addEventListener('click', () => {
   localStorage.removeItem('weeklyPlanner.currentUser');
   accountMenu.hidden = true;
   accountButton.setAttribute('aria-expanded', 'false');
-  updateLoginButton();
+  // Reload so the page shows the guest planner instead of the account's notes.
+  window.location.reload();
 });
 document.addEventListener('click', (event) => {
   if (accountWrap && !accountWrap.contains(event.target)) {
@@ -327,7 +362,12 @@ closeThemePanel.addEventListener('click', closePanel);
 panelBackdrop.addEventListener('click', closePanel);
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && themePanel.classList.contains('open')) closePanel();
+  if (event.key !== 'Escape') return;
+  if (themePanel.classList.contains('open')) closePanel();
+  if (accountMenu && !accountMenu.hidden) {
+    accountMenu.hidden = true;
+    accountButton?.setAttribute('aria-expanded', 'false');
+  }
 });
 
 [backgroundStyle, pageColor, stripeColor, paperColor, accentColor, backgroundSize, backgroundPosition, patternScale].forEach((control) => {
@@ -417,6 +457,7 @@ resetTheme.addEventListener('click', () => {
 });
 
 updateLoginButton();
+updateDayDates();
 applyTheme(getSavedTheme());
 
 const params = new URLSearchParams(window.location.search);

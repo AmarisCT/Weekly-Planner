@@ -21,23 +21,37 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
   position:absolute;right:1.8%;top:1.4%;width:8.5%;height:6.8%;
   z-index:22;background:transparent;border-radius:0;
 }
-.account-wrap{position:absolute;right:1.8%;top:1.4%;z-index:30}
+/* Logged-in account button: sits exactly over the LOGIN button drawn in the art,
+   matching its blush fill and raspberry outline (with sharp corners). */
+.scene{container-type:inline-size}
+.account-wrap{position:absolute;right:.8%;top:1.4%;z-index:30}
 .account-button{
-  min-width:150px;height:44px;padding:0 12px;border:2px solid #b85f84;border-radius:0;
-  background:#fff5fa;color:#bd557f;font:800 12px "Nunito",sans-serif;letter-spacing:.06em;
-  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  min-width:8.1cqw;height:3.2cqw;min-height:30px;padding:0 1.1cqw;
+  border:2px solid #ca3f67;border-radius:0;background:#fddee3;color:#ca3f67;
+  box-shadow:3px 3px 0 rgba(202,63,103,.75);
+  font:600 clamp(10px,.9cqw,15px)/1 "Fredoka","Nunito",ui-rounded,sans-serif;letter-spacing:.1em;
+  display:flex;align-items:center;justify-content:center;gap:.6em;cursor:pointer;white-space:nowrap;
+  transition:transform 120ms ease,box-shadow 120ms ease,background 120ms ease;
 }
+.account-button:hover{background:#fff4f7;transform:translate(-1px,-1px);box-shadow:4px 4px 0 rgba(202,63,103,.75)}
+.account-button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(202,63,103,.75)}
 .account-menu{
-  position:absolute;right:0;top:48px;width:185px;padding:5px;
-  border:2px solid #b85f84;border-radius:0;background:#fff8fb;box-shadow:0 12px 25px rgba(102,48,76,.18)
+  position:absolute;right:0;top:calc(100% + 8px);min-width:190px;padding:6px;
+  border:2px solid #ca3f67;border-radius:0;background:#fffafa;box-shadow:4px 4px 0 rgba(202,63,103,.75)
 }
 .account-menu[hidden]{display:none}
 .account-menu a,.account-menu button{
-  width:100%;min-height:40px;border:0;border-radius:0;background:transparent;color:#b6537d;
-  display:flex;align-items:center;padding:0 10px;text-decoration:none;text-align:left;
-  font:800 11px "Nunito",sans-serif;letter-spacing:.05em;cursor:pointer
+  width:100%;min-height:42px;border:0;border-radius:0;background:transparent;color:#ca3f67;
+  display:flex;align-items:center;padding:0 12px;text-decoration:none;text-align:left;
+  font:600 13px "Fredoka","Nunito",ui-rounded,sans-serif;letter-spacing:.1em;cursor:pointer
 }
-.account-menu a:hover,.account-menu button:hover{background:#ffe2ee}
+.account-menu a:hover,.account-menu button:hover{background:#fde4ea}
+.account-button:focus-visible,.account-menu a:focus-visible,.account-menu button:focus-visible,
+.monitor-hit:focus-visible,.login-hit:focus-visible,.dock-button:focus-visible{outline:3px solid #ca3f67;outline-offset:3px}
+
+/* Phone dock: only shown on portrait phones, where the drawn LOGIN button is off-screen */
+.mobile-dock{display:none}
+.swipe-hint{display:none}
 
 /* Clouds only: transparent overlay clipped to the open sky, with soft edge fades. */
 .window-clouds{
@@ -88,17 +102,53 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 @keyframes rain{from{background-position:0 0}to{background-position:-55px 100px}}
 @keyframes snow{from{transform:translateY(-10px) translateX(0)}to{transform:translateY(330px) translateX(24px)}}
 
-@media(max-width:700px){
-  body{overflow:auto}
-  .home{height:auto;min-height:100vh;align-items:start}
-  .scene{width:100vw;margin-top:0}
-  .account-button{min-width:112px;height:34px;font-size:9px}
-  .account-menu{top:38px;width:150px}
+/* Portrait phones: the room fills the screen height and you can swipe across it.
+   home.js scrolls it so the computer is centred on load. */
+@media(orientation:portrait) and (max-width:900px){
+  body{overflow:hidden}
+  body::before{display:none}
+  .home{
+    display:block;place-items:normal;width:100vw;height:100vh;height:100svh;
+    overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .home::-webkit-scrollbar{display:none}
+  .scene{width:auto;height:100vh;height:100svh;container-type:normal}
+  .scene-art{-webkit-mask-image:none;mask-image:none}
+  .login-hit{display:none}
+  .account-wrap{position:fixed;right:12px;top:12px}
+  .account-button{min-width:0;height:40px;padding:0 14px;font-size:13px}
+
+  .mobile-dock{
+    display:flex;gap:10px;justify-content:center;
+    position:fixed;left:12px;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:40;
+  }
+  .dock-button{
+    flex:1 1 0;max-width:220px;height:48px;display:flex;align-items:center;justify-content:center;
+    border:2px solid #ca3f67;border-radius:0;background:#fddee3;color:#ca3f67;text-decoration:none;
+    box-shadow:3px 3px 0 rgba(202,63,103,.8);
+    font:600 14px/1 "Fredoka","Nunito",ui-rounded,sans-serif;letter-spacing:.12em;
+  }
+  .dock-button.primary{background:#ca3f67;color:#fffafa}
+  .dock-button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(202,63,103,.8)}
+  .dock-button[hidden]{display:none}
+
+  .swipe-hint{
+    display:block;position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));z-index:39;
+    transform:translateX(-50%);padding:6px 12px;white-space:nowrap;pointer-events:none;
+    background:rgba(255,250,250,.92);border:2px solid #ca3f67;color:#ca3f67;
+    font:600 12px/1 "Fredoka","Nunito",ui-rounded,sans-serif;letter-spacing:.08em;
+    animation:hintFade 5s ease 1.2s forwards;opacity:0;
+  }
+  .twinkle{font-size:22px}
 }
-@media(prefers-reduced-motion:reduce){.twinkle,.cloud{animation:none!important}.cloud-one{left:18%}.cloud-two{left:52%}.cloud-three{left:74%}}
+@keyframes hintFade{0%{opacity:0}12%{opacity:1}75%{opacity:1}100%{opacity:0}}
+
+@media(prefers-reduced-motion:reduce){.swipe-hint{animation:none;opacity:0}.account-button{transition:none}.twinkle,.cloud{animation:none!important}.cloud-one{left:18%}.cloud-two{left:52%}.cloud-three{left:74%}}
 
 /* amaris ct studio mark: small silver link back to the parent studio */
 .studio-mark{position:fixed;left:14px;bottom:14px;z-index:40;padding:7px 12px 6px;font:400 11px/1 Arial,sans-serif;letter-spacing:2px;text-transform:none;text-decoration:none;color:#2b2b2b;background:linear-gradient(110deg,#a8a8a6,#ededeb 70%,#c9c9c7);border:1px solid #9d9d9b;box-shadow:0 2px 8px rgba(60,60,60,.22);text-shadow:0 1px 0 rgba(255,255,255,.6)}
 .studio-mark:hover{background:linear-gradient(110deg,#b8b8b6,#f6f6f4 70%,#d4d4d2);color:#000}
 .studio-mark:focus-visible{outline:2px solid #444;outline-offset:3px}
 @media(max-width:700px){.studio-mark{left:10px;bottom:10px;font-size:10px;letter-spacing:1.5px;padding:6px 10px 5px}}
+@media(orientation:portrait) and (max-width:900px){.studio-mark{top:12px;bottom:auto;left:12px}}

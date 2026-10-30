@@ -225,6 +225,51 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;back
 }
 body.lights-off .daylight{opacity:calc(var(--daylight,0) * .5)}
 
+/* ---------- Your week on the computer screen ----------
+   Sized to the planner drawn on the monitor (image px 1040–1556 × 400–600).
+   Units are relative to this box, so it lines up at every screen size. */
+.monitor-week{
+  position:absolute;z-index:2;pointer-events:none;container-type:inline-size;
+  left:62.2%;top:42.51%;width:30.86%;height:21.25%;transition:filter .9s ease;
+}
+body.lights-off .monitor-week{filter:brightness(.5) saturate(1.18) hue-rotate(-12deg)}
+.mw-col{position:absolute;top:0;height:100%}
+.mw-today{
+  position:absolute;left:-.5%;right:-.5%;top:1.5%;bottom:.5%;
+  border:max(2px,.45cqw) solid #ff6f9c;border-radius:1.6cqw;
+  box-shadow:0 0 0 max(1px,.25cqw) rgba(255,255,255,.7),0 0 1.8cqw rgba(255,111,156,.6);
+  animation:todayGlow 2.6s ease-in-out infinite;
+}
+.mw-today::after{
+  content:"♥";position:absolute;right:-1.5cqw;top:-1.7cqw;width:3.6cqw;height:3.6cqw;
+  display:grid;place-items:center;border-radius:50%;background:#ff6f9c;color:#fff;
+  font:700 2.1cqw/1 "Fredoka",sans-serif;box-shadow:0 0 0 .3cqw #fff;
+}
+@keyframes todayGlow{
+  0%,100%{box-shadow:0 0 0 max(1px,.25cqw) rgba(255,255,255,.7),0 0 1.2cqw rgba(255,111,156,.45)}
+  50%{box-shadow:0 0 0 max(1px,.25cqw) rgba(255,255,255,.7),0 0 2.6cqw rgba(255,111,156,.8)}
+}
+.mw-notes{
+  --row:4.07cqw;
+  position:absolute;left:6%;right:5%;top:26%;height:calc(var(--row) * 4);
+  margin:0;padding:0 0 0 .2cqw;list-style:none;overflow:hidden;
+  background-color:#fcf0ed;border-radius:.8cqw;box-shadow:0 0 .6cqw .5cqw #fcf0ed;
+  background-image:linear-gradient(to bottom,transparent calc(var(--row) - 1px),rgba(240,150,178,.42) calc(var(--row) - 1px));
+  background-size:100% var(--row);
+  color:#d8467a;font:400 3cqw/var(--row) "Patrick Hand","Fredoka",cursive;letter-spacing:0;
+}
+.mw-notes li{position:relative;padding-left:1.6cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mw-notes li::before{
+  content:"";position:absolute;left:0;top:calc(var(--row) / 2 - .5cqw);width:1cqw;height:1cqw;border-radius:50%;background:#f7a3bd;
+}
+.mw-notes.more{overflow:visible}
+.mw-notes.more li:nth-child(n+5){display:none}
+.mw-notes.more::after{
+  content:attr(data-more);position:absolute;right:-1cqw;bottom:-1.6cqw;padding:.35cqw .9cqw;border-radius:2cqw;
+  background:#ff6f9c;color:#fff;font:700 2.1cqw/1 "Fredoka",sans-serif;box-shadow:0 0 0 .3cqw #fff;
+}
+@media(prefers-reduced-motion:reduce){.mw-today{animation:none}}
+
 /* ---------- Twinkling string lights ----------
    A warm glow sits exactly on each star light and pendant in the artwork
    and pulses at its own pace; little sparkle glints pop on the stars. */

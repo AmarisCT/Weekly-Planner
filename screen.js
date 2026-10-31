@@ -12,12 +12,12 @@
   const LEFT = 1040;
   const WIDTH = 516;
 
-  const currentUser = () => localStorage.getItem('weeklyPlanner.currentUser') || 'guest';
+  const S = window.PlannerStore;
+  if (!S) return;
+  S.migrate();
 
-  function notesFor(day) {
-    const text = localStorage.getItem(`weeklyPlanner.${currentUser()}.${day}`) || '';
-    return text.split('\n').map((line) => line.trim()).filter(Boolean);
-  }
+  // This week's plans for a day: [{ t: text, d: done }]
+  const notesFor = (day) => S.readItems(S.dayKey(S.weekId(), day));
 
   function render() {
     const today = (new Date().getDay() + 6) % 7;
@@ -40,9 +40,11 @@
       if (notes.length) {
         const list = document.createElement('ul');
         list.className = 'mw-notes';
-        notes.forEach((note) => {
+        // unfinished plans first, ticked-off ones after (crossed out)
+        [...notes.filter((n) => !n.d), ...notes.filter((n) => n.d)].forEach((note) => {
           const item = document.createElement('li');
-          item.textContent = note;
+          item.textContent = note.t;
+          if (note.d) item.className = 'done';
           list.appendChild(item);
         });
         col.appendChild(list);
@@ -63,8 +65,9 @@
     const todays = notesFor(DAYS[today]);
     const link = document.querySelector('.monitor-hit');
     if (link) {
-      link.setAttribute('aria-label', todays.length
-        ? `Open the Weekly Planner. ${NAMES[today]}: ${todays.join(', ')}`
+      const open = todays.filter((n) => !n.d).map((n) => n.t);
+      link.setAttribute('aria-label', open.length
+        ? `Open the Weekly Planner. ${NAMES[today]}: ${open.join(', ')}`
         : 'Open the Weekly Planner');
     }
   }

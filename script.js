@@ -1,5 +1,3 @@
-const monthSelect = document.querySelector('#month');
-const weekInput = document.querySelector('#weekOf');
 const printButton = document.querySelector('#printButton');
 const loginButton = document.querySelector('#loginButton');
 const customizeButton = document.querySelector('#customizeButton');
@@ -32,15 +30,6 @@ const removeBackgroundImage = document.querySelector('#removeBackgroundImage');
 const imageOptions = document.querySelector('#imageOptions');
 const resetTheme = document.querySelector('#resetTheme');
 const presetButtons = document.querySelectorAll('[data-preset]');
-
-const editableFields = document.querySelectorAll(
-  '[contenteditable="true"][data-key]'
-);
-
-const months = [
-  'January','February','March','April','May','June',
-  'July','August','September','October','November','December'
-];
 
 const defaultTheme = {
   backgroundStyle: 'stripes',
@@ -89,8 +78,6 @@ const presets = {
   }
 };
 
-const shortMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const dayCards = document.querySelectorAll('.day-box[data-day]');
 const plannerEyebrow = document.querySelector('#plannerEyebrow');
 
 function getLocalDateString(date = new Date()) {
@@ -145,30 +132,6 @@ function updateLoginButton() {
   if (plannerEyebrow) {
     plannerEyebrow.textContent = firstName ? `${firstName}'s week at a glance` : 'my week at a glance';
   }
-}
-
-function getMondayOf(dateString) {
-  const date = dateString ? new Date(`${dateString}T12:00:00`) : new Date();
-  if (Number.isNaN(date.getTime())) return getMondayOf('');
-  const monday = new Date(date);
-  monday.setDate(date.getDate() - ((date.getDay() + 6) % 7));
-  return monday;
-}
-
-function updateDayDates() {
-  const monday = getMondayOf(weekInput.value);
-  const todayString = getLocalDateString(new Date());
-
-  dayCards.forEach((card) => {
-    const date = new Date(monday);
-    date.setDate(monday.getDate() + Number(card.dataset.day));
-
-    const num = card.querySelector('.day-num');
-    const label = card.querySelector('.day-date');
-    if (num) num.textContent = String(date.getDate());
-    if (label) label.textContent = shortMonths[date.getMonth()];
-    card.classList.toggle('is-today', getLocalDateString(date) === todayString);
-  });
 }
 
 function getSavedTheme() {
@@ -290,47 +253,6 @@ function closePanel() {
   customizeButton.setAttribute('aria-expanded', 'false');
   panelBackdrop.hidden = true;
 }
-
-months.forEach((name, index) => {
-  const option = document.createElement('option');
-  option.value = String(index);
-  option.textContent = name;
-  monthSelect.appendChild(option);
-});
-
-const today = new Date();
-const savedWeek = localStorage.getItem(userKey('weekOf'));
-const savedMonth = localStorage.getItem(userKey('month'));
-
-weekInput.value = savedWeek || getLocalDateString(today);
-monthSelect.value = savedMonth ?? String(today.getMonth());
-
-weekInput.addEventListener('change', () => {
-  localStorage.setItem(userKey('weekOf'), weekInput.value);
-
-  if (weekInput.value) {
-    const selectedDate = new Date(`${weekInput.value}T12:00:00`);
-    monthSelect.value = String(selectedDate.getMonth());
-    localStorage.setItem(userKey('month'), monthSelect.value);
-  }
-
-  updateDayDates();
-});
-
-monthSelect.addEventListener('change', () => {
-  localStorage.setItem(userKey('month'), monthSelect.value);
-});
-
-editableFields.forEach((field) => {
-  const storageKey = userKey(field.dataset.key);
-  const savedText = localStorage.getItem(storageKey);
-
-  if (savedText) field.innerText = savedText;
-
-  field.addEventListener('input', () => {
-    localStorage.setItem(storageKey, field.innerText);
-  });
-});
 
 printButton.addEventListener('click', () => window.print());
 
@@ -457,7 +379,6 @@ resetTheme.addEventListener('click', () => {
 });
 
 updateLoginButton();
-updateDayDates();
 applyTheme(getSavedTheme());
 
 const params = new URLSearchParams(window.location.search);

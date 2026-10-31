@@ -33,13 +33,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261030-1" />
+  <link rel="stylesheet" href="style.css?v=20261030-10" />
 </head>
 <body>
   <nav class="toolbar" aria-label="Planner actions">
     <a class="btn btn-quiet home-button" href="index.html"><span aria-hidden="true">←</span> MY ROOM</a>
 
     <div class="toolbar-right">
+      <button class="btn stickers-button" id="stickersButton" type="button" aria-controls="stickerSheet" aria-expanded="false">STICKERS</button>
       <button class="btn print-button" id="printButton" type="button" aria-label="Print weekly planner">PRINT</button>
       <button class="btn customize-button is-hidden" id="customizeButton" type="button" aria-controls="themePanel" aria-expanded="false">CUSTOMIZE</button>
       <a class="btn btn-solid login-button" id="loginButton" href="login.html">LOGIN</a>
@@ -170,55 +171,101 @@
   </aside>
   <div class="panel-backdrop" id="panelBackdrop" hidden></div>
 
-  <main class="planner" aria-label="Weekly planner">
-    <header class="planner-header">
+  <main class="planner" id="planner" aria-label="Weekly planner">
+    <header class="planner-box planner-header" data-card="header">
       <p class="eyebrow" id="plannerEyebrow">my week at a glance</p>
       <h1>WEEKLY PLANNER</h1>
 
-      <div class="date-fields" aria-label="Planner date selectors">
-        <label class="field-group" for="weekOf">
-          <span>Week of</span>
-          <input id="weekOf" type="date" aria-label="Select the week date" />
-        </label>
+      <div class="date-fields" aria-label="Choose a week">
+        <div class="week-nav">
+          <button class="week-arrow" id="prevWeek" type="button" aria-label="Previous week">‹</button>
+          <label class="field-group" for="weekOf">
+            <span>Week of</span>
+            <input id="weekOf" type="date" aria-label="Pick any day in the week" />
+          </label>
+          <button class="week-arrow" id="nextWeek" type="button" aria-label="Next week">›</button>
+        </div>
 
         <label class="field-group" for="month">
           <span>Month</span>
-          <select id="month" aria-label="Select month"></select>
+          <select id="month" aria-label="Month for your goals"></select>
         </label>
       </div>
+      <p class="week-status"><span id="weekRange"></span><button class="this-week" id="thisWeek" type="button" hidden>back to this week ♡</button></p>
     </header>
 
     <section class="days-grid" aria-label="Days of the week">
-      <article class="planner-box day-box" data-day="0"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>MONDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Monday plans" data-key="monday"></div></article>
-      <article class="planner-box day-box" data-day="1"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>TUESDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Tuesday plans" data-key="tuesday"></div></article>
-      <article class="planner-box day-box" data-day="2"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>WEDNESDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Wednesday plans" data-key="wednesday"></div></article>
-      <article class="planner-box day-box" data-day="3"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>THURSDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Thursday plans" data-key="thursday"></div></article>
-      <article class="planner-box day-box" data-day="4"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>FRIDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Friday plans" data-key="friday"></div></article>
-      <article class="planner-box day-box" data-day="5"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>SATURDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Saturday plans" data-key="saturday"></div></article>
-      <article class="planner-box day-box sunday-box" data-day="6"><div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>SUNDAY</h2><span class="day-date"></span></div><div class="lined-field" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Sunday plans" data-key="sunday"></div></article>
+      <article class="planner-box day-box" data-day="0" data-card="monday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>MONDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="monday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="monday" aria-label="Monday plans"></ul>
+        <div class="habits" data-habits="monday"></div>
+      </article>
+      <article class="planner-box day-box" data-day="1" data-card="tuesday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>TUESDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="tuesday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="tuesday" aria-label="Tuesday plans"></ul>
+        <div class="habits" data-habits="tuesday"></div>
+      </article>
+      <article class="planner-box day-box" data-day="2" data-card="wednesday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>WEDNESDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="wednesday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="wednesday" aria-label="Wednesday plans"></ul>
+        <div class="habits" data-habits="wednesday"></div>
+      </article>
+      <article class="planner-box day-box" data-day="3" data-card="thursday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>THURSDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="thursday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="thursday" aria-label="Thursday plans"></ul>
+        <div class="habits" data-habits="thursday"></div>
+      </article>
+      <article class="planner-box day-box" data-day="4" data-card="friday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>FRIDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="friday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="friday" aria-label="Friday plans"></ul>
+        <div class="habits" data-habits="friday"></div>
+      </article>
+      <article class="planner-box day-box" data-day="5" data-card="saturday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>SATURDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="saturday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="saturday" aria-label="Saturday plans"></ul>
+        <div class="habits" data-habits="saturday"></div>
+      </article>
+      <article class="planner-box day-box sunday-box" data-day="6" data-card="sunday">
+        <div class="day-head"><span class="day-num" aria-hidden="true"></span><h2>SUNDAY</h2><span class="day-date"></span><button class="carry" type="button" data-carry="sunday" hidden></button></div>
+        <ul class="lined-field todo-list" data-list="sunday" aria-label="Sunday plans"></ul>
+        <div class="habits" data-habits="sunday"></div>
+      </article>
     </section>
 
     <section class="goals-section" aria-labelledby="weeklyGoalsHeading">
-      <h2 class="section-label" id="weeklyGoalsHeading"><span aria-hidden="true">✿</span> Weekly goals</h2>
+      <h2 class="section-label" id="weeklyGoalsHeading"><span aria-hidden="true">✿</span> <span id="goalsMonthLabel">Weekly goals</span></h2>
       <div class="weekly-goals-grid">
-        <article class="planner-box goal-box"><h3>WEEK 1</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 1 goals" data-key="week1"></div></article>
-        <article class="planner-box goal-box"><h3>WEEK 2</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 2 goals" data-key="week2"></div></article>
-        <article class="planner-box goal-box"><h3>WEEK 3</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 3 goals" data-key="week3"></div></article>
-        <article class="planner-box goal-box"><h3>WEEK 4</h3><div class="lined-field goal-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Week 4 goals" data-key="week4"></div></article>
+        <article class="planner-box goal-box" data-card="week1"><h3>WEEK 1</h3><ul class="lined-field goal-lines todo-list" data-list="week1" data-goal="1" aria-label="Week 1 goals"></ul></article>
+        <article class="planner-box goal-box" data-card="week2"><h3>WEEK 2</h3><ul class="lined-field goal-lines todo-list" data-list="week2" data-goal="1" aria-label="Week 2 goals"></ul></article>
+        <article class="planner-box goal-box" data-card="week3"><h3>WEEK 3</h3><ul class="lined-field goal-lines todo-list" data-list="week3" data-goal="1" aria-label="Week 3 goals"></ul></article>
+        <article class="planner-box goal-box" data-card="week4"><h3>WEEK 4</h3><ul class="lined-field goal-lines todo-list" data-list="week4" data-goal="1" aria-label="Week 4 goals"></ul></article>
       </div>
     </section>
 
     <section class="monthly-section" aria-labelledby="monthlyGoalsHeading">
       <h2 class="section-label" id="monthlyGoalsHeading"><span aria-hidden="true">✦</span> Monthly goals</h2>
-      <article class="planner-box monthly-box"><div class="lined-field monthly-lines" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Monthly goals" data-key="monthly"></div></article>
+      <article class="planner-box monthly-box" data-card="monthly"><ul class="lined-field monthly-lines todo-list" data-list="monthly" data-goal="1" aria-label="Monthly goals"></ul></article>
     </section>
   </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <aside class="sticker-sheet" id="stickerSheet" aria-label="Sticker sheet" hidden>
+    <div class="sheet-head">
+      <p><strong>Stickers</strong> <span class="sheet-hint">drag one onto your planner, or tap to add it</span></p>
+      <button class="panel-close" id="closeStickers" type="button" aria-label="Close sticker sheet">×</button>
+    </div>
+    <div class="sheet-grid" id="stickerGrid"></div>
+  </aside>
 
   <footer class="planner-footer">
     <a class="studio-mark" href="https://amarisct.github.io/Amaris/">an amaris ct project</a>
   </footer>
 
-  <script src="script.js?v=20261030-1"></script>
+  <script src="store.js?v=20261030-10"></script>
+  <script src="script.js?v=20261030-10"></script>
+  <script src="planner.js?v=20261030-10"></script>
+  <script src="stickers.js?v=20261030-10"></script>
   <script src="pwa.js" defer></script>
 </body>
 </html>

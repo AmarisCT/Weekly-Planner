@@ -268,6 +268,8 @@ body.lights-off .monitor-week{filter:brightness(.5) saturate(1.18) hue-rotate(-1
   color:#d8467a;font:400 3cqw/var(--row) "Patrick Hand","Fredoka",cursive;letter-spacing:0;
 }
 .mw-notes li{position:relative;padding-left:1.6cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mw-notes li.done{text-decoration:line-through;text-decoration-color:rgba(216,70,122,.7);opacity:.55}
+.mw-notes li.done::before{content:"♥";background:none;color:#ff6f9c;width:auto;height:auto;top:0;font-size:2.2cqw;line-height:var(--row)}
 .mw-notes li::before{
   content:"";position:absolute;left:0;top:calc(var(--row) / 2 - .5cqw);width:1cqw;height:1cqw;border-radius:50%;background:#f7a3bd;
 }

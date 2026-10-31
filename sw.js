@@ -1,11 +1,11 @@
 // Lets the planner open even without a connection.
 // Always tries the network first (so updates show up right away) and only
 // falls back to the saved copy when offline.
-const CACHE = 'weekly-planner-v5';
+const CACHE = 'weekly-planner-v6';
 const CORE = [
   './', './index.html', './planner.html', './login.html',
   './style.css', './home.css',
-  './script.js', './auth.js', './home.js', './room.js', './sky.js', './screen.js', './seasons.js', './pwa.js',
+  './script.js', './store.js', './planner.js', './stickers.js', './auth.js', './home.js', './room.js', './sky.js', './screen.js', './seasons.js', './pwa.js',
   './assets/room-window-cutout.webp', './assets/icons/icon-192.png', './favicon.ico', './manifest.webmanifest'
 ];
 
